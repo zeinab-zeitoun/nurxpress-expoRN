@@ -1,3 +1,4 @@
+// firebase credentials
 export default {
     apiKey: "AIzaSyBPXapBNw0qUCc9lpyAGlS3UEKkQUW9b3w",
     authDomain: "nurxpress-chats.firebaseapp.com",
