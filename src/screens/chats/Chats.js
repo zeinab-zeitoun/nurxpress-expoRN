@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
 // send notification to the other user
 async function sendPushNotification(name, text, expoPushToken) {
   const message = {
-    to: "ExponentPushToken[CKz2ZFEZi2sp3a0wgn4ajc]",
+    to: expoPushToken,
     sound: 'default',
     body: name + ": " + text,
     data: { data: 'goes here' },
