@@ -91,38 +91,34 @@ export default function Login({navigation}){
     
     // Api call to login
     const login = () => {
-        console.log("remeber: ", remember_me)
+        // login with firebase using email and pass
         firebase.auth()
         .signInWithEmailAndPassword(email, password)
         .then((value) => {
+            // get the user id token
             return value.user.getIdToken();
         })
         .then( async (Firebasetoken) => {
-            console.log('FB', Firebasetoken)
             await api.login({Firebasetoken, remember_me})
             .then(res => {
-                console.log("fb ", Firebasetoken)
+
                 //store the token sent by laravel passport
                 cookie.set('token', res.data.access_token)
-                .then(() => console.log('cookie set!'));
 
                 //store the user id
                 cookie.set('user_id', res.data.user_id)
-                .then(() => console.log('user_id set!'));
 
                 //store the role
                 cookie.set('role', res.data.role)
-                .then(() => console.log('role set:', res.data.role));
 
                 registerForPushNotificationsAsync(res.data.user_id)
                 .then( () => {
-                    // navigation
+                    // navigation according to role
                     if (res.data.role === "nurse"){
                         res.data.info?  navigation.navigate('NurseTabNavigation'):  navigation.navigate('PersonalInfo')
                     }    
-                   
                     else 
-                     res.data.info? navigation.navigate("UserTabNavigation"):navigation.navigate("FullName")
+                        res.data.info? navigation.navigate("UserTabNavigation"):navigation.navigate("FullName")
                 })	
             })
             .catch(err => console.log("laravel " + err))
