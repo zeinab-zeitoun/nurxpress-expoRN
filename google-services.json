@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "630155392678",
+    "project_id": "nurxpress-chats",
+    "storage_bucket": "nurxpress-chats.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630155392678:android:25d1cfc446b776a6076667",
+        "android_client_info": {
+          "package_name": "com.sefactory.nurxpress"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "630155392678-kpi6bvorfa6mfos5if85n10i0o4hh6t5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANmYH1f9xLWcl6yzMIBnRvgsW0mguSJhU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630155392678-kpi6bvorfa6mfos5if85n10i0o4hh6t5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

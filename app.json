@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "nurxpress-expoRN",
-    "slug": "nurxpress-expoRN",
+    "name": "nurxpress",
+    "slug": "nurxpress-front",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/nurxpress-icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/nurxpress-splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -23,7 +23,10 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.sefactory.nurxpress",
+      "versionCode": 1,
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
