@@ -29,14 +29,12 @@ export default function Cal(props) {
     await api.getUnavailableDatesOfNurse(props.route.params.nurse_id, props.route.params.token)
           .then( res => {
             let dates = res.data
-            console.log(dates)
             // write the unavailable dates in the format needed for the calendar
             let unavailableDates = {}
             dates.forEach( date => {
               unavailableDates[date] = {selected: true}
             })
             setSelected(unavailableDates)
-            console.log(selected)
           })
           .catch( err => console.log(err))
   }

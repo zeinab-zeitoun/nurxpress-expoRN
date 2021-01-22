@@ -3,18 +3,16 @@ import { View, Text, Image, StyleSheet } from 'react-native'
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import api from '../../../../services/api/community';
 import cookie from 'cross-cookie';
-import {Avatar} from 'react-native-paper';
-
 
 export default function AddPost({navigation}){
 
          // add post
          const [post, setPost]=useState("")
          const addPost = async () => {
-             console.log(post)
              await api.addPost({post}, token)
              .then(res => console.log(res.data))
              .catch( err => console.log(err))
+             // navigate back to the community after adding the post
              navigation.goBack()
          }
      
@@ -28,10 +26,7 @@ export default function AddPost({navigation}){
      
      
          useEffect( () => {
-             let mounted=true;
-             if (mounted)
-                getToken()
-            return () => mounted = false;
+            getToken()
              
          }, [token]) //render again when we get the token
 
@@ -43,6 +38,7 @@ export default function AddPost({navigation}){
                     style={styles.image}
             />
 
+            {/* input text fot the post to be added */}
             <View style={styles.writePost}>
                 <TextInput placeholder="Share your experience and knowledge"
                     multiline={true}
@@ -50,6 +46,7 @@ export default function AddPost({navigation}){
                 />
             </View>
 
+            {/* BOTTUN => when pressed => add post */}
             <TouchableOpacity style={styles.btn}
                             onPress={addPost}
             >

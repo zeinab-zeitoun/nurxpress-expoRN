@@ -36,8 +36,8 @@ export default function Example(props) {
     .doc(params.roomId)
     .get()
     .then( snapshot => {
+      // if the nurse didn't read the message
       if (params.loggedin == "nurse" && !snapshot.data().opened1 ){
-        console.log(params.receiver_id)
         // get his expo notification token
         db.collection('users')
         .doc(params.receiver_id.toString())
@@ -48,8 +48,8 @@ export default function Example(props) {
         })
         
       }
+      // if the regular didn't read the message
       if (params.loggedin == "regular" && !snapshot.data().opened2 ){
-        console.log(params.receiver_id)
         // get his expo notification token
         db.collection('users')
         .doc(params.receiver_id.toString())
@@ -66,7 +66,6 @@ export default function Example(props) {
 
   // Add messages to firestore
   const addMessageToFirestore = async (message) => {
-    //console.log(message)
     // fisrt update the last message sent with its time
     // then add the message to messages collection
     await db.collection('rooms')
@@ -82,17 +81,15 @@ export default function Example(props) {
           sentBy: params.sender_id,
           createdAt: message[0].createdAt
       })).then( () => {
+        // check if the message id read after adding it
        checkIfMessageIsRead()
       })
-
-    console.log('message added')
-    // delay the notification by 5 seconds
-    //setTimeout(() => checkIfMessageIsRead(), 5000)
   }
 
   // get all messages => real time
+  // limit them to the last 100 messages
   const getMessages = async () => {
-    console.log("getting messages")
+
     db.collection("rooms")
     .doc(params.roomId)
     .collection('messages')
@@ -108,7 +105,6 @@ export default function Example(props) {
             text: doc.data().text,
             user:  {
               _id: parseInt(doc.data().sentBy),
-            
             },
           })
           
@@ -119,6 +115,7 @@ export default function Example(props) {
   }
 
   // close chat room
+  //for nurse
   const setClosed2 = () => {
     db.collection('rooms')
     .doc(params.roomId.toString())
@@ -126,6 +123,7 @@ export default function Example(props) {
         opened2: false
     })
   }
+  //for user
   const setClosed1 = () => {
     db.collection('rooms')
     .doc(params.roomId.toString())
@@ -135,6 +133,7 @@ export default function Example(props) {
   }
 
   // open chat room
+  //for nuser
   const setOpened1 = () => {
     db.collection('rooms')
     .doc(params.roomId.toString())
@@ -142,7 +141,7 @@ export default function Example(props) {
         opened1: true
     })
   }
-
+  //for nurse
   const setOpened2 = () => {
     db.collection('rooms')
     .doc(params.roomId.toString())
@@ -152,6 +151,7 @@ export default function Example(props) {
   }
  
   // set the time where the user last opened the chat
+  //for user
   const setUser1openedAt = () => {
     db.collection('rooms')
     .doc(params.roomId.toString())
@@ -159,7 +159,7 @@ export default function Example(props) {
       user1openedAt: new Date()
     })
   }
-
+  //for nurse
   const setUser2openedAt = () => {
     db.collection('rooms')
     .doc(params.roomId.toString())
@@ -169,11 +169,15 @@ export default function Example(props) {
   }
 
   useEffect( () => {
+    // when the component mounts => user opened the chat room
     if (params.loggedin === "regular")
       setOpened1()
     else setOpened2()
     
+    // get all the previous messages
     getMessages()
+
+    // when the component unmounts => user closed the chat room
     return( () => {
       // when leaving the chat room
       //set opened to false and 
@@ -190,9 +194,10 @@ export default function Example(props) {
     })
   }, [])
 
-  //get the nurse id if the user is a regular user
+  // get the nurse id if the user is a regular user
+  // nurse id is needed so that the user can navigate to nurse profile
+  // when pressing on the nurse name
   const [nurse_id, setNurse_id] = useState('')
-  
   const getNurseGivenUserId = async (token) => {
     await api.getNurseGivenUserId(params.receiver_id, token)
     .then((res) => setNurse_id(res.data.id))
@@ -205,6 +210,7 @@ export default function Example(props) {
     getToken()
   }, [])
 
+
   // get avatar
   const[avatarUrl, setAvatarUrl] = useState('')
   const getAvatar = (user_id) => {
@@ -213,14 +219,14 @@ export default function Example(props) {
          .get()
          .then( (url) => {
              setAvatarUrl(url.data().avatarUrl)
-             console.log("url: ",url.data().avatarUrl)
          })
   }
   useEffect( () => {
     getAvatar(params.receiver_id)
   }, [])
 
-    //customize the input text
+
+    //customize the input text of the chat component
     const customtInputToolbar = props => {
         return (
             <InputToolbar
@@ -235,7 +241,7 @@ export default function Example(props) {
         );
       };
 
-    //customize the messages
+    //customize the messages of the chat component
     const renderBubble = (props) => {
     return (
         <Bubble
@@ -248,59 +254,60 @@ export default function Example(props) {
         />
     )
     }
-  // customize input text
-  const textInputProps = (props) => {
-    <TextInput
-      {...props}
-    />
-  }
+
 
   const renderViews = () => {
+    // loading screen while avatar is being fetched
     if(!avatarUrl)
-    return <View style={{marginTop:200}}
-            >
-            <ActivityIndicator size="large" color="#00ced1" />
-          </View>
-      return (
-        <View 
-        style={styles.container} >
-
-            <View style={styles.receiverCtr}>
-              <Icon name="arrowleft" size={30} 
-                    color="black" 
-                    style={{marginRight: 15}}
-                    onPress = { () => props.navigation.goBack()}
-                  />
-                  
-              <Avatar.Image 
-                source={{
-                uri: avatarUrl,
-                }}
-                size={40}
-              />
-              <TouchableWithoutFeedback onPress={() => {
-                if (params.loggedin == "regular")
-                props.navigation.navigate("ViewNurseProfile", {nurse_id: nurse_id})
-              }}>
-                <Text style={styles.receiver}>{params.receiver_name}</Text>
-              </TouchableWithoutFeedback>
+      return <View style={{marginTop:200}}
+              >
+              <ActivityIndicator size="large" color="#00ced1" />
             </View>
-    
-            <GiftedChat
-              messages={messages}
-              renderAvatarOnTop
-              renderBubble={renderBubble}
-              alignTop
-              renderAvatar={ () => null}
-              showAvatarForEveryMessage={true}
-              renderInputToolbar={props => customtInputToolbar(props)}
-              onSend={messages => addMessageToFirestore(messages)}
-              user={{
-                  _id: parseInt(params.sender_id),
+
+    return (
+      <View 
+      style={styles.container} >
+          <View style={styles.receiverCtr}>
+            {/* back bottun */}
+            <Icon name="arrowleft" size={30} 
+                  color="black" 
+                  style={{marginRight: 15}}
+                  onPress = { () => props.navigation.goBack()}
+                />
+            {/* avatar */}
+            <Avatar.Image 
+              source={{
+              uri: avatarUrl,
               }}
+              size={40}
             />
-        </View>
-      )
+            {/* name of the receiver
+            if the receiver is a nurse, allow the user 
+            to navigate to his profile when pressed*/}
+            <TouchableWithoutFeedback onPress={() => {
+              if (params.loggedin == "regular")
+              props.navigation.navigate("ViewNurseProfile", {nurse_id: nurse_id})
+            }}>
+              <Text style={styles.receiver}>{params.receiver_name}</Text>
+            </TouchableWithoutFeedback>
+          </View>
+          
+          {/* react chat component */}
+          <GiftedChat
+            messages={messages}
+            renderAvatarOnTop
+            renderBubble={renderBubble}
+            alignTop
+            renderAvatar={ () => null}
+            showAvatarForEveryMessage={true}
+            renderInputToolbar={props => customtInputToolbar(props)}
+            onSend={messages => addMessageToFirestore(messages)}
+            user={{
+                _id: parseInt(params.sender_id),
+            }}
+          />
+      </View>
+    )
 
   }
   return (

@@ -47,7 +47,6 @@ export default function Edit ({navigation}) {
     const getNurse = async () => {
         await api.getNurse(token)
         .then(res => {
-            console.log(res.data)
             setNurse(res.data)
             //get avatar
             getAvatar(res.data.user_id)
@@ -62,7 +61,6 @@ export default function Edit ({navigation}) {
             .doc(user_id.toString())
             .onSnapshot( (url) => {
                 setAvatarUrl(url.data().avatarUrl)
-                console.log("url: ",url.data().avatarUrl)
             })
      }
 
@@ -73,7 +71,6 @@ export default function Edit ({navigation}) {
     const getToken = async () => {
         await cookie.get('token')
         .then(value => setToken(value));
-        console.log(token)
     }
     // fetch the previous data
     useEffect( () => {
@@ -91,7 +88,6 @@ export default function Edit ({navigation}) {
     // function to edit nurse Info
     const editNurse = async (data) => {
         await api.editNurse(data, token)
-        .then( res => console.log(res))
         .catch( err => console.log(err))
     }
 
@@ -120,7 +116,6 @@ export default function Edit ({navigation}) {
 
                 // will be executed if the the form data is validated, otherwise, the error messages will be shown
                 onSubmit={(values) => {
-                console.log(values);
                 editNurse({...values, latitude: nurse.latitude, longitude: nurse.longitude, firstName: nurse.firstName, lastName: nurse.lastName})
                 navigation.navigate('NurseTabNavigation')
                 }}

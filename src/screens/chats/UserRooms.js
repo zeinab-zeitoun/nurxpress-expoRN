@@ -28,8 +28,6 @@ export default function UserRooms(props){
 
     // get all rooms of the user
   const getRooms =  () => {
-
-    console.log("getting user rooms")
     db.collection("rooms")
     .orderBy("updatedAt", "desc")
     .where("user1", "==", user_id)
@@ -85,11 +83,13 @@ export default function UserRooms(props){
 }
 
   const renderViews = () => {
+    // loading screen while rooms are being fetched
     if (!rooms)
     return <View style={{marginTop:100}}>
                     <ActivityIndicator size="large" color="#00ced1" />
                 </View>
 
+    // no chat rooms yet   
     if (rooms.length===0)
     return(
         <View style={styles.noRoom}>
@@ -98,7 +98,7 @@ export default function UserRooms(props){
             />
             <Text style={{fontSize: 30}}>No chats yet!</Text>
         </View>)
-
+    //else
       return(
 
         <View
@@ -107,16 +107,19 @@ export default function UserRooms(props){
          <ScrollView
             keyboardShouldPersistTaps='handled'
         >
+            {/* search input */}
             <View style={styles.search}>
                 <Icon name="search1" size={25} color="#d1d1d1" style={{marginRight:10}}/>
                 <TextInput placeholder="search"
                   onChangeText={(input) => handleSearchNames(input)}
                 />
             </View>
+            {/* handle chat rooms after being filtered */}
             {
               filteredRooms.length===0 &&
                 <Text style={styles.noResults}>no results!</Text>
             }
+            {/* for reach chat room, display avatar, name, last message, and time of the last message */}
             { 
                 filteredRooms.map ((room) => {
                 return(

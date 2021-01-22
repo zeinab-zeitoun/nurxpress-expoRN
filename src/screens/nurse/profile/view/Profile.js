@@ -34,7 +34,6 @@ export default function Profile ({navigation}) {
     const getNurse = async () => {
         await api.getNurse(token)
         .then(res => {
-            console.log(res.data)
             //get avatar
             getAvatar(res.data.user_id)
             setNurse(res.data)})
@@ -63,7 +62,6 @@ export default function Profile ({navigation}) {
             .get()
             .then( (url) => {
                 setAvatarUrl(url.data().avatarUrl)
-                console.log("url: ",url.data().avatarUrl)
             })
      }
     // get the token
@@ -71,7 +69,6 @@ export default function Profile ({navigation}) {
     const getToken = async () => {
         await cookie.get('token')
         .then(value => setToken(value));
-        console.log(token)
     }
     useEffect( () => {
         getToken()

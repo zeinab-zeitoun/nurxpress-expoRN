@@ -57,7 +57,6 @@ export default function Login({navigation}){
           }
           //check final status
           if (finalStatus !== 'granted') {
-            console.log('Failed to get push token for push notification!');
             addExpoPushTokenToFirstore(null, user_id)
             return;
           }
@@ -121,7 +120,7 @@ export default function Login({navigation}){
                         res.data.info? navigation.navigate("UserTabNavigation"):navigation.navigate("FullName")
                 })	
             })
-            .catch(err => console.log("laravel " + err))
+            .catch(err =>  Alert.alert("Invalid credentials"))
         })
         .catch(error => {
             //if at least one of the fields are empty
@@ -207,7 +206,6 @@ const styles = StyleSheet.create({
 	container: {
         height: "100%",
         backgroundColor: '#FFF'
-        // marginTop: Platform.OS === 'android' ? 25 : 0
     },
     image: {
         height: "40%",

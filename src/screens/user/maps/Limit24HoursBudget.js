@@ -40,7 +40,6 @@ export default function Limit24HourseBudget(props) {
   }
 
   useEffect( () => {
-    console.log(props.route.params.budget24)
       getToken()
       //fetch the data and save it
       if (token){

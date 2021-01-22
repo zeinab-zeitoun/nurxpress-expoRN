@@ -16,7 +16,6 @@ function Rating() {
     const getToken = async () => {
         await cookie.get('token')
         .then(value => setToken(value));
-        console.log(token)
     }
 
     // get the nurse average rating 

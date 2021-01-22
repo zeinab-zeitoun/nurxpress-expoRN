@@ -16,7 +16,6 @@ export default function DeleteEducation(props) {
     const getToken = async () => {
         await cookie.get('token')
         .then(value => setToken(value));
-        console.log(token)
     }
 
     // delete education

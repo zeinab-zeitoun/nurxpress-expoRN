@@ -38,18 +38,15 @@ export default function Cal(props) {
     // check if the day is already added to the array, don't add again
     if (!newSelected.includes(newDay)){
       setNewSelected([...newSelected, newDay])
-      console.log("new", [...newSelected, newDay])
     }
 
     // add the new selected day to the old ones
-    console.log({...selected, [newDay] : {selected: true}})
     setSelected({...selected, [newDay] : {selected: true}})
   }
 
   // delete unavailable date
   const deleteUnavailableDate = async (date) => {
     await api.deleteUnavailableDate(date, props.route.params.token)
-    .then( (res) => console.log("deleted"))
     .catch( err => console.log(err))
   }
   const onDayLongPress = (day) => {
@@ -62,7 +59,6 @@ export default function Cal(props) {
     if (prevSelected.includes(day.dateString))
       {
         deleteUnavailableDate(day.dateString)
-        console.log(day.dateString)
         // remove it from selected object to avoid re rendering views
         setSelected({...selected, [day.dateString] : null})
       }

@@ -51,7 +51,6 @@ export default function Fill({navigation}) {
     // API to add nurseExperience
     const addNurseExperience = async (data) => {
         await api.addNurseExperience(data, token)
-        .then( res => console.log(res.data))
         .catch (err => console.log(err))
     }
 
@@ -69,7 +68,6 @@ export default function Fill({navigation}) {
                              }}
             validationSchema={reviewSchema}
             onSubmit={(values) => {
-                console.log(values);
                 addNurseExperience(values)
                 navigation.goBack();
             }}

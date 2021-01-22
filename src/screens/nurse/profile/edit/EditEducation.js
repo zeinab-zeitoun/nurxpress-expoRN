@@ -39,7 +39,6 @@ export default function EditEducation(props) {
     const showNurseEducation = async () => {
         await api.showNurseEducation(id, token)
         .then(res => {
-            console.log(res.data)
             setNurseEducation(res.data)
         })
         .catch( err => console.log(err))
@@ -50,7 +49,6 @@ export default function EditEducation(props) {
     const getToken = async () => {
         await cookie.get('token')
         .then(value => setToken(value));
-        console.log(token)
     }
 
     
@@ -104,7 +102,6 @@ export default function EditEducation(props) {
 
                     // will be executed if the the form data is validated, otherwise, the error messages will be shown
                     onSubmit={(values) => {
-                            console.log(values)
                             editNurseEducation(id, values, token)
                             props.navigation.navigate("ShowEducation")
                         }

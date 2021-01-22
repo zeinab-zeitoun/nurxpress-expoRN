@@ -29,8 +29,8 @@ export default function Community({navigation}){
     const getPosts = async () => {
         await api.getPosts(token)
         .then(res => {
-            console.log(res.data)
             setPosts(res.data)
+            //get avatar of the users
             getAvatar()
         })
         .catch( err => console.log("error", err))
@@ -79,16 +79,17 @@ export default function Community({navigation}){
 
     const renderPosts = () => {
         if(!posts)
-        return <View style={{marginTop:100}}>
-                        <ActivityIndicator size="large" color="#00ced1" />
-                </View>
+            return <View style={{marginTop:100}}>
+                            <ActivityIndicator size="large" color="#00ced1" />
+                    </View>
+
         if(posts.length===0)
-            <View>
-                <Text style={{fontSize: 24, textAlign: "center", padding: 30}}>No jobs opportunities shared in the last month</Text>
-                <Image source ={require('../../../images/sad-face.jpg')}
-                    style={{alignSelf: "center"}}
-                />
-            </View>
+            return  <View>
+                        <Text style={{fontSize: 24, textAlign: "center", padding: 30}}>No jobs opportunities shared in the last month</Text>
+                        <Image source ={require('../../../images/sad-face.jpg')}
+                            style={{alignSelf: "center"}}
+                        />
+                    </View>
 
         return <View>
         {
@@ -162,6 +163,8 @@ export default function Community({navigation}){
     }
     return(
         <ScrollView style={styles.container}>
+
+            {/* display imgae for the community and bottun to add post */}
             <Image source ={require('../../../images/nurses-community.jpg')}
                     style={styles.image}
             />
@@ -171,6 +174,7 @@ export default function Community({navigation}){
                 <Text style={{color:"gray"}}>Share a Job Opportunity</Text>
             </TouchableOpacity>
 
+            {/* render views */}
             {renderPosts()}
 
         </ScrollView>
@@ -181,7 +185,6 @@ const styles = StyleSheet.create({
 	container: {
         height: "100%",
         backgroundColor: '#dddddd',
-        // marginTop: Platform.OS === 'android' ? 25 : 0
     },
     image: {
         height: 250,

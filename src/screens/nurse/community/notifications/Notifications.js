@@ -26,9 +26,7 @@ export default function Notifications({navigation}) {
 
     // mark notification as red
     const markRead = async (id) => {
-        console.log(id, token)
         await api.markRead(id, token)
-        .then((res) => console.log(res.data))
         .catch( err => console.log(err))
     } 
 

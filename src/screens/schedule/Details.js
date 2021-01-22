@@ -22,7 +22,6 @@ export default function Details(props) {
     const [render, setRender] = useState(false)
 
     const addDetail = async () => {
-        console.log(detail)
         await api.addDetail({detail}, props.token)
         .then( (res) => setRender(!render))
         .catch( err => console.log(err))

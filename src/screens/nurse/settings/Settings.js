@@ -35,7 +35,6 @@ export default function Settings ({navigation}) {
     const getNurse = async () => {
         await apiNurse.getNurse(token)
         .then(res => {
-            console.log(res.data)
             //get avatar
             getAvatar(res.data.user_id)
             setNurse(res.data)})
@@ -50,7 +49,6 @@ export default function Settings ({navigation}) {
             .get()
             .then( (fields) => {
                 setAvatarUrl(fields.data().avatarUrl)
-                console.log("url: ",fields.data().avatarUrl)
             })
     }
 
@@ -59,7 +57,6 @@ export default function Settings ({navigation}) {
     const unreadComments = async () => {
         await apiCommunity.unreadComments(token)
         .then(res => {
-            console.log(res.data)
             setUnread(res.data)})
         .catch( err => console.log("community ", err))
     }
@@ -69,7 +66,6 @@ export default function Settings ({navigation}) {
     const getToken = async () => {
         await cookie.get('token')
         .then(value => setToken(value));
-        console.log(token)
     }
     useEffect( () => {
         getToken()

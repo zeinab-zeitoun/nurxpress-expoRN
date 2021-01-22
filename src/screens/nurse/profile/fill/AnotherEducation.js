@@ -47,7 +47,6 @@ export default function AnotherEducation({navigation}) {
     // API to add nurseEducation
     const addNurseEducation = async (data) => {
         await api.addNurseEducation(data, token)
-        .then( res => console.log(res.data))
         .catch (err => console.log(err))
     }
   return (
@@ -64,7 +63,6 @@ export default function AnotherEducation({navigation}) {
             validationSchema={reviewSchema}
 
             onSubmit={(values) => {
-                console.log(values);
                 addNurseEducation(values)
                 navigation.goBack();
             }}

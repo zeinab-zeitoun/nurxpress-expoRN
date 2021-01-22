@@ -32,7 +32,6 @@ export default function Settings ({navigation}) {
     const getUser = async () => {
         await apiUser.getUser(token)
         .then(res => {
-            console.log(res.data)
             //get avatar of the user
             getAvatar(res.data.user_id)
             setUser(res.data)})
@@ -46,7 +45,6 @@ export default function Settings ({navigation}) {
             .doc(user_id.toString())
             .onSnapshot( (fields) => {
                 setAvatarUrl(fields.data().avatarUrl)
-                console.log("url: ",fields.data().avatarUrl)
             })
     }
 
@@ -55,7 +53,6 @@ export default function Settings ({navigation}) {
     const getToken = async () => {
         await cookie.get('token')
         .then(value => setToken(value));
-        console.log(token)
     }
     useEffect( () => {
         

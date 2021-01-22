@@ -87,7 +87,6 @@ export default function Profile (props) {
       await authApi.getAuthUser(token)
       .then( res => {
         setUser(res.data)
-        console.log(user)
       })
       .catch( err => console.log(err))
     }
@@ -100,7 +99,6 @@ export default function Profile (props) {
             .get()
             .then( (url) => {
                 setAvatarUrl(url.data().avatarUrl)
-                console.log("url: ",url.data().avatarUrl)
             })
     }
 
@@ -112,7 +110,6 @@ export default function Profile (props) {
     const getNurse = async () => {
         await api.getThisNurse(id, token)
         .then(res => {
-            console.log(res.data)
             //get his avatar
             getAvatar(res.data.user_id)
             setNurse(res.data)})
@@ -138,12 +135,10 @@ export default function Profile (props) {
     const getToken = async () => {
         await cookie.get('token')
         .then(value => setToken(value));
-        console.log(token)
     }
     useEffect( () => {
         //get id
         setId(props.route.params.nurse_id)
-        console.log(id)
         getToken()
         //fetch the data and save it
         if (token){

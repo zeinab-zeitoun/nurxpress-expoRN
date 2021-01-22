@@ -31,7 +31,6 @@ export default function FullName({navigation}) {
 
                 // will be executed if the the form data is validated, otherwise, the error messages will be shown
                 onSubmit={(values) => {
-                    console.log(values);
                     navigation.navigate('UserCurrentLocation', values)
                 }}
             >

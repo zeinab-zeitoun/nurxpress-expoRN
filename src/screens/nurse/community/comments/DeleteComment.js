@@ -26,7 +26,6 @@ export default function DeletePost(props) {
     }
 
     // confirm deletion
-
     const confirmDeletion = () =>
     Alert.alert(
       "Delete Post",

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, 
+    Alert,
     LogBox, 
     Image, 
     TextInput, 
@@ -61,12 +62,10 @@ export default function Register({navigation}){
           }
           //check final status
           if (finalStatus !== 'granted') {
-            console.log('Failed to get push token for push notification!');
             return;
           }
           // if permission is granted, get expo push token
           token = (await Notifications.getExpoPushTokenAsync()).data;
-          console.log(token);
         } else {
           alert('Must use physical device for Push Notifications');
         }
@@ -98,7 +97,6 @@ export default function Register({navigation}){
 
     // if the user is a nurse, then the register button will have a title: 
     //"register as a nurse" otherwise it will be "Register"
-    
     const registerBtn = () => {
         if (isNurse)
             
@@ -118,27 +116,22 @@ export default function Register({navigation}){
     }
 
     const register =  (attributes) => {
-        console.log(attributes["email"], attributes["password"])
         firebase.auth()
         .createUserWithEmailAndPassword(attributes["email"], attributes["password"])
         .then( (value) => {
             return value.user.getIdToken()
             })
             .then( (Firebasetoken) => {
-                console.log({...attributes,Firebasetoken})
                 api.register({...attributes, Firebasetoken})
                 .then( res => {
                 //store access token in cookies
                 cookie.set('token', res.data.access_token)
-                .then(() => console.log('cookie set!'));
 
                 //store user_id in cookies
                 cookie.set('user_id', res.data.user_id)
-                .then(() => console.log('user_id set!'));
 
                 //store role in cookies
                 cookie.set('role', res.data.role)
-                .then(() => console.log('role set:', res.data.role));
 
                 //get default avatar and set it for the user
                 // then get his expoPushNoification
@@ -168,9 +161,9 @@ export default function Register({navigation}){
                 navigation.navigate("FullName")
              
             })
-            .catch (err => console.log(err))
+            .catch (err => Alert.alert("Unable to register :("))
         })
-        .catch(error => console.log("firebase ",error))
+        .catch(error => Alert.alert("Unable to register :("))
     }
 
     // get all emails to check if the email already has an account
@@ -178,7 +171,6 @@ export default function Register({navigation}){
     const getEmails = async () => {
         await api.emails()
         .then( (res) => setEmails(res.data))
-        console.log("emails", emails)
     }
     
     useEffect(  () => {

@@ -12,10 +12,10 @@ export default function EditPost(props){
          const [id, setId] = useState(props.route.params.id)
          const [post, setPost] = useState(props.route.params.post);
          const editPosts = async () => {
-             console.log(post)
              await api.editPosts(id, {post}, token)
              .then(res => console.log(res.data))
              .catch( err => console.log(err))
+             // navigate back to community after editing post 
              props.navigation.goBack()
          }
      
@@ -24,7 +24,6 @@ export default function EditPost(props){
          const getToken = async () => {
              await cookie.get('token')
              .then(value => setToken(value));
-             console.log(token)
          }
      
      
@@ -40,6 +39,7 @@ export default function EditPost(props){
                     style={styles.image}
             />
 
+            {/* input text with tehe previous post to be edited */}
             <View style={styles.writePost}>
                 <TextInput placeholder="Share your experience and knowledge"
                     multiline={true}
@@ -48,6 +48,7 @@ export default function EditPost(props){
                 />
             </View>
 
+            {/* bottun => pressed => edit post */}
             <TouchableOpacity style={styles.btn}
                             onPress={editPosts}
             >
@@ -64,7 +65,6 @@ const styles = StyleSheet.create({
 	container: {
         height: "100%",
         backgroundColor: '#dddddd',
-        // marginTop: Platform.OS === 'android' ? 25 : 0
     },
     image: {
         height: 250,

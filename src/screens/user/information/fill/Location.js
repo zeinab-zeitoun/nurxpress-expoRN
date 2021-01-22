@@ -13,7 +13,6 @@ export default function CurrentLocation(props) {
     const getToken = async () => {
         await cookie.get('token')
         .then(value => setToken(value));
-        console.log(token)
     }
     useEffect( () => {
         getToken()
@@ -46,7 +45,6 @@ export default function CurrentLocation(props) {
 				//get the coordinates
 				const latitude = position.coords.latitude.toString();
 				const longitude = position.coords.longitude.toString();
-				console.log(latitude, longitude)
 				// get full name sent by previous page
 				const fullName = props.route.params
 				//merge previous and new data

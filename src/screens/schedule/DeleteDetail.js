@@ -11,7 +11,6 @@ export default function DeletePost(props) {
     // delete detail
     const deleteDetail = () => {
         api.deleteDetail(props.id, props.token)
-        .then(res => console.log(res.data))
         .catch( err => console.log(err))
     }
 

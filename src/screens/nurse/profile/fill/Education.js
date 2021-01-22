@@ -53,7 +53,6 @@ export default function Education(props) {
     // API to add nurseEducation
     const addNurseEducation = async (data) => {
         await api.addNurseEducation(data, token)
-        .then( res => console.log(res.data))
         .catch (err => console.log(err))
     }
 

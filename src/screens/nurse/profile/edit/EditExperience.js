@@ -41,7 +41,7 @@ export default function EditExperience(props) {
     const showNurseExperience = async () => {
         await api.showNurseExperience(id, token)
         .then(res => {
-            console.log(res.data)
+
             setNurseExperience(res.data)
         })
         .catch( err => console.log(err))

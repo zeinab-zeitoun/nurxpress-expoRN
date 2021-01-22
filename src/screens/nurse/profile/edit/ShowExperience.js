@@ -32,7 +32,6 @@ function ShowExperience ({navigation}) {
     const getToken = async () => {
         await cookie.get('token')
         .then(value => setToken(value));
-        console.log(token)
     }
 
     // initialize delete state as false

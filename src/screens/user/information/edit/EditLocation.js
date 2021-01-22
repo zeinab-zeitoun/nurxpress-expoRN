@@ -13,12 +13,11 @@ export default function CurrentLocation({navigation}) {
 	 const getToken = async () => {
 		 await cookie.get('token')
 		 .then(value => setToken(value));
-		 console.log(token)
 	 }
 	 
 	 useEffect( () => {
 		 getToken()
-	 }, []) //render again when we get the token
+	 }, [])
 
 	 
 	const changeLocation = async (data) => {
@@ -50,7 +49,6 @@ export default function CurrentLocation({navigation}) {
                 //get the coordinates
 				const latitude = position.coords.latitude.toString();
                 const longitude = position.coords.longitude.toString();
-                console.log(longitude, latitude)
 				changeLocation({latitude, longitude})
 			},
 			error => Alert.alert(error),

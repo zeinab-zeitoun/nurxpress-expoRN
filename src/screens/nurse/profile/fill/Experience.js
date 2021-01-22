@@ -55,7 +55,6 @@ export default function Fill(props) {
     // API to add nurseExperience
     const addNurseExperience = async (data) => {
         await api.addNurseExperience(data, token)
-        .then( res => console.log(res.data))
         .catch (err => console.log(err))
     }
 
@@ -80,8 +79,6 @@ export default function Fill(props) {
                              }}
             validationSchema={reviewSchema}
             onSubmit={(values) => {
-                console.log(values);
-                // API: Add to DB
 
                 //if add is set to true, navigate to AnotherExperience page
                 if (add){
@@ -96,7 +93,6 @@ export default function Fill(props) {
                 else 
                 {
                     // ad experience to DB
-                    console.log(values)
                     addNurseExperience(values)
                     props.navigation.navigate("NurseTabNavigation")
                 }

@@ -27,9 +27,7 @@ function Rating(props) {
 
     // add rating
     const rate = async () => {
-        console.log(nurse_id, starCount)
         await api.rate(nurse_id, {rating:starCount}, token)
-        .then( res => console.log(res.data))
         .catch( err => console.log(err))
     }
 
@@ -38,7 +36,6 @@ function Rating(props) {
     const getToken = async () => {
         await cookie.get('token')
         .then(value => setToken(value));
-        console.log(token)
     }
 
     //check if the user already rated the nurse

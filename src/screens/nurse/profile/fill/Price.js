@@ -23,9 +23,7 @@ export default function Price(props) {
     
     // api: Add Nurse info
     const addNurse =  async (data) => {
-        console.log(token)
         await api.addNurse(data, token)
-        .then( res => console.log(res.data))
         .catch( err => console.log(err))
     }
 
