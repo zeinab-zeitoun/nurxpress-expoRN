@@ -64,6 +64,7 @@ export default function Settings ({navigation}) {
     }, [token]) //render again when we get the token
 
     //logout
+    
     const logout = async() => {
         await db.collection('users')
             .doc(user.user_id.toString())

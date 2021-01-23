@@ -68,6 +68,7 @@ export default function Settings ({navigation}) {
         .then(value => setToken(value));
     }
     useEffect( () => {
+        
         getToken()
         //fetch the data and save it
         if (token){
@@ -77,6 +78,8 @@ export default function Settings ({navigation}) {
         // will be executed when we come back to the screen
         // so in case any update happened, it will update the data
         navigation.addListener ('focus', () => {
+            console.log("hi")
+        firebase.auth().currentUser.getIdToken().then(token => console.log('got token', token))
             //fetch the data and save it
             if (token)
                 unreadComments()
@@ -86,17 +89,17 @@ export default function Settings ({navigation}) {
  
     //logout
     const logout = async() => {
-        await cookie.clearAll()
+        await db.collection('users')
+            .doc(nurse.user_id.toString())
+            .update({
+                pushToken : null
+            })
         .then( async () => {
             await firebase.auth().signOut()
         }).then(async () => {
             await apiAuth.logout()
         }).then( async() => {
-            await db.collection('users')
-            .doc(nurse.user_id.toString())
-            .update({
-                pushToken : null
-            })
+            await cookie.clearAll()
         }).then( () => {
             navigation.navigate("Login")
         })

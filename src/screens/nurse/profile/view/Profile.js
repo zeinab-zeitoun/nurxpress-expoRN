@@ -71,6 +71,7 @@ export default function Profile ({navigation}) {
         .then(value => setToken(value));
     }
     useEffect( () => {
+        
         getToken()
         //fetch the data and save it
         if (token){
@@ -81,6 +82,8 @@ export default function Profile ({navigation}) {
         // will be executed when we come back to the screen
         // so in case any update happened, it will update the data
         navigation.addListener ('focus', () => {
+        console.log("hi")
+        firebase.auth().currentUser.getIdToken().then(token => console.log('got token', token))
             //fetch the data and save it
             if (token){
                 getNurse()
