@@ -8,11 +8,14 @@
     git clone https://github.com/zeinab-zeitoun/nurxpress-expoRN.git
 
 3. In the command line, run:
+
     cd <project-name>
     npm install
     
 4. Firebase:
-    a. It is assumed that you already created a Firebase project and enabled authentication with email and password (refer to README file in nurxpress_laravel [LINK])
+
+    a. It is assumed that you already created a Firebase project and enabled authentication with email and password (refer to README file in nurxpress_laravel https://github.com/zeinab-zeitoun/nurxpress_laravel.git)
+    
     b. Get the Firebase config:
           From Firebase navigate to Project settings -> General -> Your apps -> Copy the following and paste them in FirebaseConfig.js in the project:
           var firebaseConfig = {
@@ -25,10 +28,13 @@
             appId: "APP_ID",
             measurementId: "G-MEASUREMENT_ID",
           };
+          
     c. Go to Firebase->storage-> create a folder “avatar”. In the folder avatar, upload an image and name it: default-avatar.jpg
         You can use my default avatar image below or any other image
         https://firebasestorage.googleapis.com/v0/b/nurxpress-chats.appspot.com/o/avatar%2Fdefault-avatar.jpg?alt=media&token=bba3e80c-4f6b-49a3-8ab1-8816c48cdfcd 
+        
     d. Firebase Rules: 
+    
           Go to cloud firestore-> rules, then copy and paste the following:
               rules_version = '2';
               service cloud.firestore {
@@ -39,6 +45,7 @@
                   }
                 }
               }
+              
            Go to Storage -> rules, the copy and paste the following:
               rules_version = '2';
               service firebase.storage {
