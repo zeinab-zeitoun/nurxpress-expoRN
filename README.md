@@ -5,7 +5,7 @@
     https://reactnative.dev/docs/environment-setup
   
 2. Clone the repository:
-    git clone [URL]
+    git clone https://github.com/zeinab-zeitoun/nurxpress-expoRN.git
 
 3. In the command line, run:
     cd <project-name>
