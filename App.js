@@ -57,6 +57,7 @@ import FullName from './src/screens/user/information/fill/FullName';
 
 // edit user info
 import EditUserLocation from './src/screens/user/information/edit/EditLocation';
+import EditUserAvatar from './src/screens/user/information/edit/EditAvatar';
 
 // view nurse profile
 import ViewNurseProfile from './src/screens/user/viewNurseProfile/ViewNurseProfile';
@@ -78,8 +79,6 @@ const MyTheme = {
 export default function App() {
 
 	const [initialScreenName, setInitialScreenName] = useState(null);
-	//const [token, setToken] = useState(null);
-	//const [role, setRole] = useState(null);
 
 	const Stack = createStackNavigator();
 
@@ -263,6 +262,12 @@ export default function App() {
 							component={EditUserLocation}
 							options={{
 								title:"Edit your Name"
+							}} />
+
+				<Stack.Screen name="EditUserAvatar" 
+							component={EditUserAvatar}
+							options={{
+								title:""
 							}} />
 		
 				<Stack.Screen name="NursesOnMap" 

@@ -1,7 +1,7 @@
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   TouchableOpacity,
   Button,

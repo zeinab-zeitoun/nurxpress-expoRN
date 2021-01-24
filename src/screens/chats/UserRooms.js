@@ -22,152 +22,161 @@ export default function UserRooms(props){
     LogBox.ignoreLogs(['Setting a timer']);
     const db = firebase.firestore()
 
-  const[avatarUrls, setAvatarUrls] = useState(null)
-  const [rooms, setRooms] = useState(null)
-  const [filteredRooms, setFilteredRooms] = useState([])
+    const[avatarUrls, setAvatarUrls] = useState(null)
+    const [rooms, setRooms] = useState(null)
+    const [filteredRooms, setFilteredRooms] = useState([])
 
-    // get all rooms of the user
-  const getRooms =  () => {
-    db.collection("rooms")
-    .orderBy("updatedAt", "desc")
-    .where("user1", "==", user_id)
-    .onSnapshot( snapShot => {
-        let room = []
-        snapShot.forEach(  function (roomDoc) {    
-            room.push({...roomDoc.data(), roomId: roomDoc.id})
-      })
-      setRooms(room)
-      setFilteredRooms(room)
-    }) 
-
-    
-    // get users avatar
-    db.collection("users")
-    .onSnapshot( snap => {
-        let avatarUrl = {}
-        snap.forEach(doc => {
-            avatarUrl[doc.id]= doc.data().avatarUrl
-        })
-        setAvatarUrls(avatarUrl)
-    })
-}
-
-// get user_id
-  const [user_id, setUser_id] = useState('');
-  const getUserId = async () => {
-      await cookie.get('user_id')
-      .then( res => {
-          setUser_id(res)
-        })
-  }
-
-  useEffect ( () => {
-    getUserId()
-    if(user_id)
-        getRooms()
-    
-  }, [user_id])
-
-  const handleSearchNames = (input) => {
-    // lowercase the input and the name
-    if (input){
-      input = input.toLowerCase()
-      const filteredRooms = rooms.filter( (room) => {
-          //return the rooms where the names contain the input text
-          return room.user2Name.toLowerCase().includes(input)
-      })
-      setFilteredRooms(filteredRooms)
+    // get user_id
+    const [user_id, setUser_id] = useState('');
+    const getUserId = async () => {
+        await cookie.get('user_id')
+        .then( res => {
+            setUser_id(res)
+            })
     }
-    else 
-      setFilteredRooms(rooms)
-}
 
-  const renderViews = () => {
-    // loading screen while rooms are being fetched
-    if (!rooms)
-    return <View style={{marginTop:100}}>
+    useEffect ( () => {
+        getUserId()
+    }, [])
+
+    useEffect( () => {
+
+        if(!user_id)
+            return
+
+        //get the rooms of the user
+        var unsubscribeFromRooms = db.collection("rooms")
+            .orderBy("updatedAt", "desc")
+            .where("user1", "==", user_id)
+            .onSnapshot( snapShot => {
+                let room = []
+                snapShot.forEach(  function (roomDoc) {    
+                    room.push({...roomDoc.data(), roomId: roomDoc.id})
+                })
+                setRooms(room)
+                // initially, the filtered rooms are the same as all rooms
+                setFilteredRooms(room)
+            }) 
+
+        // get users avatar
+        var unsubscribeFromAvatars = db.collection("users")
+                                        .onSnapshot( snap => {
+                                            let avatarUrl = {}
+                                            snap.forEach(doc => {
+                                                avatarUrl[doc.id]= doc.data().avatarUrl
+                                            })
+                                            setAvatarUrls(avatarUrl)
+                                        })
+
+        props.navigation.addListener ('blur', () => {
+            // stop listening to changesfrom firestore when leaving the screen
+            unsubscribeFromRooms()
+            unsubscribeFromAvatars()
+        })
+
+    }, [user_id])
+
+    const handleSearchNames = (input) => {
+        // lowercase the input and the name
+        if (input){
+        input = input.toLowerCase()
+        const filteredRooms = rooms.filter( (room) => {
+            //return the rooms where the names contain the input text
+            return room.user2Name.toLowerCase().includes(input)
+        })
+        setFilteredRooms(filteredRooms)
+        }
+        else 
+        setFilteredRooms(rooms)
+    }
+
+    const renderViews = () => {
+        // loading screen while rooms are being fetched
+        if (!rooms || !avatarUrls)
+        return <View style={{marginTop:100}}>
                     <ActivityIndicator size="large" color="#00ced1" />
                 </View>
 
-    // no chat rooms yet   
-    if (rooms.length===0)
-    return(
-        <View style={styles.noRoom}>
-            <Image source ={require('../../images/noChats.jpeg')}
-                style={styles.image}
-            />
-            <Text style={{fontSize: 30}}>No chats yet!</Text>
-        </View>)
-    //else
-    return(
+        // no chat rooms yet   
+        if (rooms.length===0)
+        return(
+            <View style={styles.noRoom}>
+                <Image source ={require('../../images/noChats.jpeg')}
+                    style={styles.image}
+                />
+                <Text style={{fontSize: 30}}>No chats yet!</Text>
+            </View>)
+        //else
+        return(
 
-    <View style={styles.container}>
-        <ImageBackground source={require('../../images/background2.png')} style={styles.backImage}>
-            <ScrollView
-                keyboardShouldPersistTaps='handled'
-            >
-                {/* search input */}
-                <View style={styles.search}>
-                    <Icon name="search1" size={25} color="#d1d1d1" style={{marginRight:10}}/>
-                    <TextInput placeholder="search"
-                    onChangeText={(input) => handleSearchNames(input)}
-                    />
-                </View>
-                {/* handle chat rooms after being filtered */}
-                {
-                filteredRooms.length===0 &&
-                    <Text style={styles.noResults}>no results!</Text>
-                }
-                {/* for reach chat room, display avatar, name, last message, and time of the last message */}
-                { 
-                    filteredRooms.map ((room) => {
-                    return(
-                        <TouchableOpacity 
-                            style={
-                                [styles.room,
-                                room.user1openedAt.toDate() > room.updatedAt.toDate()?
-                                styles.read:
-                                styles.unread]
+        <View style={styles.container}>
+            <ImageBackground source={require('../../images/background2.png')} style={styles.backImage}>
+                <ScrollView
+                    keyboardShouldPersistTaps='handled'
+                >
+                    {/* search input */}
+                    <View style={styles.search}>
+                        <Icon name="search1" size={25} color="#d1d1d1" style={{marginRight:10}}/>
+                        <TextInput placeholder="search"
+                        onChangeText={(input) => handleSearchNames(input)}
+                        />
+                    </View>
+                    {/* handle chat rooms after being filtered */}
+                    {
+                    filteredRooms.length===0 &&
+                        <Text style={styles.noResults}>no results!</Text>
+                    }
+                    {/* for reach chat room, display avatar, name, last message, and time of the last message */}
+                    { 
+                        filteredRooms.map ((room) => {
+                        return(
+                            <TouchableOpacity 
+                                style={
+                                    [styles.room,
+                                    room.user1openedAt.toDate() > room.updatedAt.toDate()?
+                                    styles.read:
+                                    styles.unread]
+                                    }
+
+                                key={room.user2}
+                                onPress={ () => 
+                                {
+                                
+                                    props.navigation.navigate("Chats", {
+                                        receiver_id : room.user2,
+                                        receiver_name : room.user2Name,
+                                        sender_id: room.user1,
+                                        loggedin: "regular",
+                                        roomId: room.roomId,
+                                    })
                                 }
-
-                            key={room.user2}
-                            onPress={ () => 
-                            {
-                            
-                                props.navigation.navigate("Chats", {
-                                    receiver_id : room.user2,
-                                    receiver_name : room.user2Name,
-                                    sender_id: room.user1,
-                                    loggedin: "regular",
-                                    roomId: room.roomId,
-                                })
-                            }
-                        }>
-                            <View style ={styles.row}>
-                            {avatarUrls &&
-                                <Avatar.Image 
-                                source={{
-                                uri: avatarUrls[room.user2],
-                                }}
-                                size={40}
-                            />}
-                                <View style={styles.column}>
-                                    <View style={styles.row}>
-                                        <Text style={styles.name} >{room.user2Name}</Text>
-                                        <Text style={styles.time}>  {moment(room.updatedAt.toDate()).fromNow()}</Text>
+                            }>
+                                <View style ={styles.row}>
+                                {avatarUrls &&
+                                    <Avatar.Image 
+                                    source={{
+                                    uri: avatarUrls[room.user2],
+                                    }}
+                                    size={40}
+                                />}
+                                    <View style={styles.column}>
+                                        <View style={styles.row}>
+                                            <Text style={styles.name} >{room.user2Name}</Text>
+                                            <Text style={styles.time}>  {moment(room.updatedAt.toDate()).fromNow()}</Text>
+                                        </View>
+                                            <Text numberOfLines={1} style={styles.lastMessage} >{room.lastMessage}</Text>
                                     </View>
-                                        <Text numberOfLines={1} style={styles.lastMessage} >{room.lastMessage}</Text>
                                 </View>
-                            </View>
-                            
-                        </TouchableOpacity>
-                    )
-                })}
-            </ScrollView>
-        </ImageBackground>
-    </View>
-    )
-  }
+                                
+                            </TouchableOpacity>
+                        )
+                    })}
+                </ScrollView>
+            </ImageBackground>
+        </View>
+        )
+    }
+
     return(
         <View style={styles.container}>
             {renderViews()}

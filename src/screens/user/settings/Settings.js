@@ -17,8 +17,6 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import firebaseConfig from '../../../../FirebaseConfig';
 
-export default function Settings ({navigation}) {
-
     // Initialize Firebase
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
@@ -26,6 +24,8 @@ export default function Settings ({navigation}) {
         firebase.app(); // if already initialized
     }   
     const db = firebase.firestore()
+
+export default function Settings ({navigation}) {
 
     //fetch user info
     const [user, setUser]=useState(null)
@@ -35,16 +35,16 @@ export default function Settings ({navigation}) {
             //get avatar of the user
             getAvatar(res.data.user_id)
             setUser(res.data)})
-        .catch( err => console.log(err))
+        .catch( err => console.log("get user", err))
     }
 
     // get avatar
     const[avatarUrl, setAvatarUrl] = useState('')
     const getAvatar = (user_id) => {
-        if(firebase.auth().currentUser)
             db.collection("users")
             .doc(user_id.toString())
-            .onSnapshot( (fields) => {
+            .get()
+            .then( (fields) => {
                 setAvatarUrl(fields.data().avatarUrl)
             })
     }
@@ -56,7 +56,6 @@ export default function Settings ({navigation}) {
         .then(value => setToken(value));
     }
     useEffect( () => {
-        
         getToken()
         //fetch the data and save it
         if (token)
@@ -64,10 +63,12 @@ export default function Settings ({navigation}) {
 
     }, [token]) //render again when we get the token
 
+
     //logout
-    
     const logout = async() => {
         // set expo push noification to null
+        //unsubscribe()
+    
         await db.collection('users')
             .doc(user.user_id.toString())
             .update({
@@ -88,7 +89,7 @@ export default function Settings ({navigation}) {
     
     // rendering the settings
     const renderSettings = () => {
-    if (!user || !avatarUrl){
+    if (!user || ! avatarUrl){
         return <View style={{marginTop:100}}
                 >
                     <ActivityIndicator size="large" color="#00ced1" />
@@ -118,12 +119,15 @@ export default function Settings ({navigation}) {
             <View style={styles.menuWrapper}>
                 <View>
 
-                    <View style={[styles.menuItem, {borderTopWidth: 2, borderColor: "#dddddd"}]}>
-                        <UploadAvatar user_id={user.user_id}/> 
+                    <TouchableOpacity 
+                        style={[styles.menuItem, {borderTopWidth: 2, borderColor: "#dddddd"}]}
+                        onPress = { () => navigation.navigate("EditUserAvatar", {user_id: user.user_id})}
+                    >
+                        <ExpoIcon name="edit" size={30} color="#00ced1"/>
                         <Text style={styles.menuItemText}>
                             Change my Profile Picture
                         </Text>
-                    </View>
+                    </TouchableOpacity>
                   
                     <TouchableOpacity onPress={() => navigation.navigate("EditUserLocation")}>
                         <View style={styles.menuItem}>

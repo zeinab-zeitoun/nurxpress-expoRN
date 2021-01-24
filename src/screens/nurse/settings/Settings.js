@@ -118,81 +118,81 @@ export default function Settings ({navigation}) {
         }
         else{
             return(
-        <View>
-            <View style={styles.userInfoSection}>
-                
-                    {
-                        avatarUrl && 
-                        <Avatar.Image 
-                            source={{
-                            uri: avatarUrl,
-                            }}
-                            size={100}
-                        />
-                    }
-
-                    {/* Full name*/}
-                   
-                    <View style={{marginLeft: 20}}>
-                        <Title style={[styles.name, {
-                        marginTop:25,
-                        marginBottom: 15,
-                        }]}>{nurse.firstName} {nurse.lastName}</Title>
-                    </View>
-            </View>
-
-    
-            <View style={styles.menuWrapper}>
                 <View>
-                    <TouchableOpacity onPress={ () => navigation.navigate("CommunityNotifications")}
-                                        style={styles.notifications} >
-                        {/* section for community notifications */}
-                        <View style={styles.menuItem}>
-                            <ExpoIcon name="notification" color="#00ced1" size={25}/>
-                            <Text style={styles.menuItemText}>
-                                Community Notifications
-                            </Text>
-                        </View>
+                    <View style={styles.userInfoSection}>
+                        
+                            {
+                                avatarUrl && 
+                                <Avatar.Image 
+                                    source={{
+                                    uri: avatarUrl,
+                                    }}
+                                    size={100}
+                                />
+                            }
 
+                            {/* Full name*/}
+                        
+                            <View style={{marginLeft: 20}}>
+                                <Title style={[styles.name, {
+                                marginTop:25,
+                                marginBottom: 15,
+                                }]}>{nurse.firstName} {nurse.lastName}</Title>
+                            </View>
+                    </View>
+
+            
+                    <View style={styles.menuWrapper}>
                         <View>
-                            <Text style={styles.unread}>{unread}</Text>
+                            <TouchableOpacity onPress={ () => navigation.navigate("CommunityNotifications")}
+                                                style={styles.notifications} >
+                                {/* section for community notifications */}
+                                <View style={styles.menuItem}>
+                                    <ExpoIcon name="notification" color="#00ced1" size={25}/>
+                                    <Text style={styles.menuItemText}>
+                                        Community Notifications
+                                    </Text>
+                                </View>
+
+                                <View>
+                                    <Text style={styles.unread}>{unread}</Text>
+                                </View>
+                            </TouchableOpacity>
+
+                            {/* section for Availability*/}
+                            <TouchableOpacity onPress={ () => navigation.navigate("Availability", {token:token})}>
+                            <View style={styles.menuItem}>
+                                <Icon name="calendar" color="#00ced1" size={25}/>
+                                <Text style={styles.menuItemText}>
+                                    My Availability
+                                </Text>
+                            </View>
+                            </TouchableOpacity>
+
+                            {/* section to change location*/}
+                            <TouchableOpacity onPress={ () => navigation.navigate("EditLocation")}>
+                            <View style={styles.menuItem}>
+                                <Icon name="map-marker-radius" color="#00ced1" size={25}/>
+                                <Text style={styles.menuItemText}>
+                                    Change my Location
+                                </Text>
+                            </View>
+                            </TouchableOpacity>
+
+                            {/* section to logout*/}
+                            <TouchableOpacity onPress={ () => logout()}>
+                            <View style={[styles.menuItem, {borderTopWidth: 2,borderBottomWidth: 2, borderColor: "#dddddd"}]}>
+                                <Icon name="logout" color="#00ced1" size={25}/>
+                                <Text style={styles.menuItemText}>
+                                    Logout
+                                </Text>
+                            </View>
+                            </TouchableOpacity>
+
                         </View>
-                    </TouchableOpacity>
 
-                    {/* section for Availability*/}
-                    <TouchableOpacity onPress={ () => navigation.navigate("Availability", {token:token})}>
-                    <View style={styles.menuItem}>
-                        <Icon name="calendar" color="#00ced1" size={25}/>
-                        <Text style={styles.menuItemText}>
-                            My Availability
-                        </Text>
                     </View>
-                    </TouchableOpacity>
-
-                    {/* section to change location*/}
-                    <TouchableOpacity onPress={ () => navigation.navigate("EditLocation")}>
-                    <View style={styles.menuItem}>
-                        <Icon name="map-marker-radius" color="#00ced1" size={25}/>
-                        <Text style={styles.menuItemText}>
-                            Change my Location
-                        </Text>
-                    </View>
-                    </TouchableOpacity>
-
-                    {/* section to logout*/}
-                    <TouchableOpacity onPress={ () => logout()}>
-                    <View style={[styles.menuItem, {borderTopWidth: 2,borderBottomWidth: 2, borderColor: "#dddddd"}]}>
-                        <Icon name="logout" color="#00ced1" size={25}/>
-                        <Text style={styles.menuItemText}>
-                            Logout
-                        </Text>
-                    </View>
-                    </TouchableOpacity>
-
                 </View>
-
-            </View>
-        </View>
             )
         }
     }

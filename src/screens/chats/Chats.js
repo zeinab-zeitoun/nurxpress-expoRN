@@ -14,105 +14,134 @@ import 'firebase/firestore';
 import firebaseConfig from '../../../FirebaseConfig';
 
 
-  // Initialize Firebase
-  if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-  }else {
-    firebase.app(); // if already initialized
-  }  
+    // Initialize Firebase
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }else {
+      firebase.app(); // if already initialized
+    }  
 
 export default function Example(props) {
 
-  const [messages, setMessages] = useState([]);
-  const [params, setParams] = useState(props.route.params);
-   
-  const db = firebase.firestore()
-
-  // check if the other user read message
-  // if not, send notification
-  const checkIfMessageIsRead = () => {
+    const [messages, setMessages] = useState([]);
+    const [params, setParams] = useState(props.route.params);
     
-    db.collection("rooms")
-    .doc(params.roomId)
-    .get()
-    .then( snapshot => {
-      // if the nurse didn't read the message
-      if (params.loggedin == "nurse" && !snapshot.data().opened1 ){
-        // get his expo notification token
-        db.collection('users')
-        .doc(params.receiver_id.toString())
-        .get()
-        .then(expoPushToken => {
-          // send the notification
-          sendPushNotification(snapshot.data().user2Name, snapshot.data().lastMessage, expoPushToken.data().pushToken)
-        })
-        
-      }
-      // if the regular didn't read the message
-      if (params.loggedin == "regular" && !snapshot.data().opened2 ){
-        // get his expo notification token
-        db.collection('users')
-        .doc(params.receiver_id.toString())
-        .get()
-        .then(expoPushToken => {
-          // send the notification
-          sendPushNotification(snapshot.data().user1Name, snapshot.data().lastMessage, expoPushToken.data().pushToken)
-        })
-        
-      }
-    })
-  }
+    const db = firebase.firestore()
 
-
-  // Add messages to firestore
-  const addMessageToFirestore = async (message) => {
-    // fisrt update the last message sent with its time
-    // then add the message to messages collection
-    await db.collection('rooms')
-    .doc(params.roomId)
-    .update({
-      lastMessage: message[0].text,
-      updatedAt: new Date()
-    }).then( async () => await db.collection('rooms')
-        .doc(params.roomId)
-        .collection('messages')
-        .add({
-          text: message[0].text,
-          sentBy: params.sender_id,
-          createdAt: message[0].createdAt
-      })).then( () => {
-        // check if the message id read after adding it
-       checkIfMessageIsRead()
-      })
-  }
-
-  // get all messages => real time
-  // limit them to the last 100 messages
-  const getMessages = async () => {
-
-    db.collection("rooms")
-    .doc(params.roomId)
-    .collection('messages')
-    .orderBy("createdAt", "desc")
-    .limit(100)
-    .onSnapshot(function(querySnapshot) {
-        var msgs = [];
-        querySnapshot.forEach(function(doc) {
-          // msg object in the format that gifted chat accepts
-          msgs.push({
-            _id: doc.id,
-            createdAt: doc.data().createdAt.toDate(),
-            text: doc.data().text,
-            user:  {
-              _id: parseInt(doc.data().sentBy),
-            },
+    // check if the other user read message
+    // if not, send notification
+    const checkIfMessageIsRead = () => {
+      
+      db.collection("rooms")
+      .doc(params.roomId)
+      .get()
+      .then( snapshot => {
+        // if the nurse didn't read the message
+        if (params.loggedin == "nurse" && !snapshot.data().opened1 ){
+          // get his expo notification token
+          db.collection('users')
+          .doc(params.receiver_id.toString())
+          .get()
+          .then(expoPushToken => {
+            // send the notification
+            sendPushNotification(snapshot.data().user2Name, snapshot.data().lastMessage, expoPushToken.data().pushToken)
           })
           
+        }
+        // if the regular didn't read the message
+        if (params.loggedin == "regular" && !snapshot.data().opened2 ){
+          // get his expo notification token
+          db.collection('users')
+          .doc(params.receiver_id.toString())
+          .get()
+          .then(expoPushToken => {
+            // send the notification
+            sendPushNotification(snapshot.data().user1Name, snapshot.data().lastMessage, expoPushToken.data().pushToken)
+          })
+          
+        }
+      })
+    }
+
+
+    // Add messages to firestore
+    const addMessageToFirestore = async (message) => {
+      // fisrt update the last message sent with its time
+      // then add the message to messages collection
+      await db.collection('rooms')
+      .doc(params.roomId)
+      .update({
+        lastMessage: message[0].text,
+        updatedAt: new Date()
+      }).then( async () => await db.collection('rooms')
+          .doc(params.roomId)
+          .collection('messages')
+          .add({
+            text: message[0].text,
+            sentBy: params.sender_id,
+            createdAt: message[0].createdAt
+        })).then( () => {
+          // check if the message id read after adding it
+        checkIfMessageIsRead()
+        })
+    }
+
+    // get all messages => real time
+    // limit them to the last 100 messages
+    const getMessages = () => {
+
+        db.collection("rooms")
+        .doc(params.roomId)
+        .collection('messages')
+        .orderBy("createdAt", "desc")
+        .limit(100)
+        .onSnapshot(function(querySnapshot) {
+            var msgs = [];
+            querySnapshot.forEach(function(doc) {
+              // msg object in the format that gifted chat accepts
+              msgs.push({
+                _id: doc.id,
+                createdAt: doc.data().createdAt.toDate(),
+                text: doc.data().text,
+                user:  {
+                  _id: parseInt(doc.data().sentBy),
+                },
+              })
+              
+            });
+            setMessages(msgs);
         });
-        setMessages(msgs);
-    });
-    
-  }
+      
+    }
+
+    useEffect ( () => {
+      var unsubscribeFromMsgs = db.collection("rooms")
+                                .doc(params.roomId)
+                                .collection('messages')
+                                .orderBy("createdAt", "desc")
+                                .limit(100)
+                                .onSnapshot(function(querySnapshot) {
+                                    var msgs = [];
+                                    querySnapshot.forEach(function(doc) {
+                                      // msg object in the format that gifted chat accepts
+                                      msgs.push({
+                                        _id: doc.id,
+                                        createdAt: doc.data().createdAt.toDate(),
+                                        text: doc.data().text,
+                                        user:  {
+                                          _id: parseInt(doc.data().sentBy),
+                                        },
+                                      })
+                                      
+                                    });
+                                    setMessages(msgs);
+                                });
+      props.navigation.addListener ('blur', () => {
+        // stop listening to changesfrom firestore when leaving the screen
+        unsubscribeFromMsgs()
+      })
+
+    },[])
 
   // close chat room
   //for nurse
@@ -173,9 +202,6 @@ export default function Example(props) {
     if (params.loggedin === "regular")
       setOpened1()
     else setOpened2()
-    
-    // get all the previous messages
-    getMessages()
 
     // when the component unmounts => user closed the chat room
     return( () => {

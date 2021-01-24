@@ -82,8 +82,6 @@ export default function Profile ({navigation}) {
         // will be executed when we come back to the screen
         // so in case any update happened, it will update the data
         navigation.addListener ('focus', () => {
-        console.log("hi")
-        firebase.auth().currentUser.getIdToken().then(token => console.log('got token', token))
             //fetch the data and save it
             if (token){
                 getNurse()
@@ -103,146 +101,146 @@ export default function Profile ({navigation}) {
         }
         else{
             return(
-        <View>
-            <View style={styles.userInfoSection}>
-                <View style={{flexDirection: 'row', marginTop: 15}}>
-
-                    {/* !!!!!!!!!!!!!!!!!!!!!!hard coded */}
-                    {/* profile image */}
-
-                    <Avatar.Image 
-                        source={{
-                        uri: avatarUrl,
-                        }}
-                        size={140}
-                    />
-
-                    {/* Full name, location, and contact number */}
-                    <View style={styles.column}>
-                        <View >
-                            <Text 
-                                style={[styles.name, {
-                                marginTop:25,
-                                marginBottom: 15,
-                                }]}
-                                textBreakStrategy={'simple'}
-                            >
-                                {nurse.firstName} {nurse.lastName}
-                            </Text>
-                        </View>
-                        {/* !!!!!!!!!!!!!!!!!!!!!!!!!!! hard coded*/}
-                        
-
-                            {/* allow calling from react native */}
-                            <TouchableOpacity onPress={()=>{Linking.openURL(`tel:${nurse.contact}`);}}>
-                                <View style={styles.row}>
-                                    <Icon name="phone" color="green" size={20}/>
-                                    <Text style={{color:"#777777", marginLeft: 10, fontSize:17}}>{nurse.contact}</Text>
-                                </View>
-                            </TouchableOpacity>
-
-                            <View>
-                                <Rating/>
-                            </View>
-
-                       
-                    </View>
-                </View>
-            </View>
-
-            {/* edit profile button */}
-            <TouchableOpacity onPress={() => navigation.navigate("EditProfile")}
-                style={{flexDirection:"row", alignItems:"center"}}>
-                <ExpoIcon name="edit" color="gray" style={{ margin:10}} size={25}/>
-                <Text>Edit Profile</Text>
-            </TouchableOpacity>
-
-
-
-
-
-
-            {/* prices per 8, 12 and 24 hours */}
-            <View style={styles.infoBoxWrapper}>
-                <View style={[styles.infoBox, {
-                borderRightColor: '#dddddd',
-                borderRightWidth: 1
-                }]}>
-                    <Title>{nurse.pricePer8Hour}</Title>
-                    <Caption>8 hours</Caption>
-                </View>
-                <View style={[styles.infoBox, {
-                borderRightColor: '#dddddd',
-                borderRightWidth: 1
-                }]}>
-                    <Title>{nurse.pricePer12Hour}</Title>
-                    <Caption>12 hours</Caption>
-                </View>
-                <View style={styles.infoBox}>
-                    <Title>{nurse.pricePer24Hour}</Title>
-                    <Caption>24 hours</Caption>
-                </View>
-            </View>
-
-            <View style={styles.menuWrapper}>
-                {/* Experience */}
                 <View>
-                <View style={{flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}> 
-                        <Text style={styles.title}>Experience</Text>
-                        <TouchableOpacity onPress={ () => navigation.navigate("ShowExperience")}>
-                            <ExpoIcon name="edit" color="gray" style={{ margin:10}} size={25}/>
-                        </TouchableOpacity>
-                    </View>
-                    {
-                        nurseExperience.length === 0?
+                    <View style={styles.userInfoSection}>
+                        <View style={{flexDirection: 'row', marginTop: 15}}>
 
-                        <View><Text style={{marginLeft:10, marginBottom:10}}>No experience yet...</Text></View>:
+                            {/* !!!!!!!!!!!!!!!!!!!!!!hard coded */}
+                            {/* profile image */}
 
-                        nurseExperience.map( experience => (
-                        <View key={experience.id}>
-                            <View style={styles.menuItem}>
-                                <Icon name="briefcase" color="#00ced1" size={25}/>
-                                <Text style={styles.menuItemText}>
-                                {experience.employmentType} {experience.position} at {experience.company}
-                                    {experience.endYear!==null ? 
-                                    <Text style={styles.date}> ({experience.startYear}-{experience.endYear})</Text>
-                                    :<Text style={styles.date}> ({experience.startYear})</Text>}
-                                </Text>
+                            <Avatar.Image 
+                                source={{
+                                uri: avatarUrl,
+                                }}
+                                size={140}
+                            />
+
+                            {/* Full name, location, and contact number */}
+                            <View style={styles.column}>
+                                <View >
+                                    <Text 
+                                        style={[styles.name, {
+                                        marginTop:25,
+                                        marginBottom: 15,
+                                        }]}
+                                        textBreakStrategy={'simple'}
+                                    >
+                                        {nurse.firstName} {nurse.lastName}
+                                    </Text>
+                                </View>
+                                {/* !!!!!!!!!!!!!!!!!!!!!!!!!!! hard coded*/}
+                                
+
+                                    {/* allow calling from react native */}
+                                    <TouchableOpacity onPress={()=>{Linking.openURL(`tel:${nurse.contact}`);}}>
+                                        <View style={styles.row}>
+                                            <Icon name="phone" color="green" size={20}/>
+                                            <Text style={{color:"#777777", marginLeft: 10, fontSize:17}}>{nurse.contact}</Text>
+                                        </View>
+                                    </TouchableOpacity>
+
+                                    <View>
+                                        <Rating/>
+                                    </View>
+
+                                
                             </View>
                         </View>
-                    )) 
-                    }
-                </View>
-            
-                {/* Education */}
-                <View style={{borderTopWidth:1, borderTopColor:"#dddddd"}}>
-                    <View style={{flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}> 
-                        <Text style={styles.title}>Education</Text>
-                        <TouchableOpacity onPress={ () => navigation.navigate("ShowEducation")}>
-                            <ExpoIcon name="edit" color="gray" style={{ margin:10}} size={25}/>
-                        </TouchableOpacity>
                     </View>
-                    { 
-                        nurseEducation.length === 0?
 
-                        <View><Text style={{marginLeft:10}}>No education yet...</Text></View>:
+                    {/* edit profile button */}
+                    <TouchableOpacity onPress={() => navigation.navigate("EditProfile")}
+                        style={{flexDirection:"row", alignItems:"center"}}>
+                        <ExpoIcon name="edit" color="gray" style={{ margin:10}} size={25}/>
+                        <Text>Edit Profile</Text>
+                    </TouchableOpacity>
 
-                        nurseEducation.map( education => (
-                        <View key={education.id}>
-                            <View style={styles.menuItem}>
-                                <Icon name="school" color="#00ced1" size={25}/>
-                                <Text style={styles.menuItemText}>
-                                    {education.degree} at {education.school}
-                                    <Text style={styles.date}> ({education.graduationYear})</Text>
-                                </Text>
-                            </View>
+
+
+
+
+
+                    {/* prices per 8, 12 and 24 hours */}
+                    <View style={styles.infoBoxWrapper}>
+                        <View style={[styles.infoBox, {
+                        borderRightColor: '#dddddd',
+                        borderRightWidth: 1
+                        }]}>
+                            <Title>{nurse.pricePer8Hour}</Title>
+                            <Caption>8 hours</Caption>
                         </View>
-                    ))
-                    }
-                </View>
+                        <View style={[styles.infoBox, {
+                        borderRightColor: '#dddddd',
+                        borderRightWidth: 1
+                        }]}>
+                            <Title>{nurse.pricePer12Hour}</Title>
+                            <Caption>12 hours</Caption>
+                        </View>
+                        <View style={styles.infoBox}>
+                            <Title>{nurse.pricePer24Hour}</Title>
+                            <Caption>24 hours</Caption>
+                        </View>
+                    </View>
 
-            </View>
-        </View>
+                    <View style={styles.menuWrapper}>
+                        {/* Experience */}
+                        <View>
+                        <View style={{flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}> 
+                                <Text style={styles.title}>Experience</Text>
+                                <TouchableOpacity onPress={ () => navigation.navigate("ShowExperience")}>
+                                    <ExpoIcon name="edit" color="gray" style={{ margin:10}} size={25}/>
+                                </TouchableOpacity>
+                            </View>
+                            {
+                                nurseExperience.length === 0?
+
+                                <View><Text style={{marginLeft:10, marginBottom:10}}>No experience yet...</Text></View>:
+
+                                nurseExperience.map( experience => (
+                                <View key={experience.id}>
+                                    <View style={styles.menuItem}>
+                                        <Icon name="briefcase" color="#00ced1" size={25}/>
+                                        <Text style={styles.menuItemText}>
+                                        {experience.employmentType} {experience.position} at {experience.company}
+                                            {experience.endYear!==null ? 
+                                            <Text style={styles.date}> ({experience.startYear}-{experience.endYear})</Text>
+                                            :<Text style={styles.date}> ({experience.startYear})</Text>}
+                                        </Text>
+                                    </View>
+                                </View>
+                            )) 
+                            }
+                        </View>
+                    
+                        {/* Education */}
+                        <View style={{borderTopWidth:1, borderTopColor:"#dddddd"}}>
+                            <View style={{flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}> 
+                                <Text style={styles.title}>Education</Text>
+                                <TouchableOpacity onPress={ () => navigation.navigate("ShowEducation")}>
+                                    <ExpoIcon name="edit" color="gray" style={{ margin:10}} size={25}/>
+                                </TouchableOpacity>
+                            </View>
+                            { 
+                                nurseEducation.length === 0?
+
+                                <View><Text style={{marginLeft:10}}>No education yet...</Text></View>:
+
+                                nurseEducation.map( education => (
+                                <View key={education.id}>
+                                    <View style={styles.menuItem}>
+                                        <Icon name="school" color="#00ced1" size={25}/>
+                                        <Text style={styles.menuItemText}>
+                                            {education.degree} at {education.school}
+                                            <Text style={styles.date}> ({education.graduationYear})</Text>
+                                        </Text>
+                                    </View>
+                                </View>
+                            ))
+                            }
+                        </View>
+
+                    </View>
+                </View>
             )
         }
     }
