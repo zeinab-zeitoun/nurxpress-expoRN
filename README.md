@@ -1,6 +1,7 @@
 # nurxpress-expoRN
 1. Install expo cli on your machine using the following commands:
     npm install -g expo-cli	
+    
     For more details, go to the documentation -> Expo Cli QuickStart:
     https://reactnative.dev/docs/environment-setup
   
@@ -10,6 +11,7 @@
 3. In the command line, run:
 
     cd (project-name)
+    
     npm install
     
 4. Firebase:
