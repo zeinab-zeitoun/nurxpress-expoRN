@@ -34,6 +34,7 @@
           };
 
     Copy and paste you config in FirebaseConfig.js in the root directory
+    
     c. Go to Firebase->storage-> create a folder “avatar”. In the folder avatar, upload an image and name it: default-avatar.jpg
 
         You can use my default avatar image below or any other image
