@@ -6,8 +6,8 @@ export default {
         axios.post(`${BASE_API_URL}/login`, attributes), 
     register: (attributes) =>
         axios.post(`${BASE_API_URL}/register`, attributes),
-    logout: () =>
-        axios.get(`${BASE_API_URL}/logout`), 
+    logout: (token) =>
+        axios.get(`${BASE_API_URL}/logout`, { headers: {"Authorization" : `Bearer ${token}`} }), 
     emails: () =>
         axios.get(`${BASE_API_URL}/emails`)
 }

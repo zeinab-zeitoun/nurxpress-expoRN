@@ -44,12 +44,13 @@ export default function Settings ({navigation}) {
     // get avatar
     const[avatarUrl, setAvatarUrl] = useState('')
     const getAvatar = async (user_id) => {
-        await db.collection("users")
-            .doc(user_id.toString())
-            .get()
-            .then( (fields) => {
-                setAvatarUrl(fields.data().avatarUrl)
-            })
+        if(firebase.auth().currentUser)
+            await db.collection("users")
+                .doc(user_id.toString())
+                .get()
+                .then( (fields) => {
+                    setAvatarUrl(fields.data().avatarUrl)
+                })
     }
 
     //get unread notifications
@@ -78,8 +79,6 @@ export default function Settings ({navigation}) {
         // will be executed when we come back to the screen
         // so in case any update happened, it will update the data
         navigation.addListener ('focus', () => {
-            console.log("hi")
-        firebase.auth().currentUser.getIdToken().then(token => console.log('got token', token))
             //fetch the data and save it
             if (token)
                 unreadComments()
@@ -100,7 +99,7 @@ export default function Settings ({navigation}) {
             await firebase.auth().signOut()
         }).then(async () => {
             // logout from laravel
-            await apiAuth.logout()
+            await apiAuth.logout(token)
         }).then( async() => {
             //clear all cookies
             await cookie.clearAll()

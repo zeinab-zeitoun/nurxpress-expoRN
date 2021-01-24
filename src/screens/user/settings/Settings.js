@@ -40,8 +40,9 @@ export default function Settings ({navigation}) {
 
     // get avatar
     const[avatarUrl, setAvatarUrl] = useState('')
-    const getAvatar = async (user_id) => {
-        await db.collection("users")
+    const getAvatar = (user_id) => {
+        if(firebase.auth().currentUser)
+            db.collection("users")
             .doc(user_id.toString())
             .onSnapshot( (fields) => {
                 setAvatarUrl(fields.data().avatarUrl)
@@ -76,7 +77,7 @@ export default function Settings ({navigation}) {
             await firebase.auth().signOut()
         }).then(async () => {
             // logout from laravel
-            await apiAuth.logout()
+            await apiAuth.logout(token)
         }).then( async() => {
             // clear all cookies
             await cookie.clearAll()
