@@ -9,7 +9,7 @@
 
 3. In the command line, run:
 
-    cd <project-name>
+    cd (project-name)
     npm install
     
 4. Firebase:
