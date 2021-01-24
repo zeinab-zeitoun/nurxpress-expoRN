@@ -60,7 +60,9 @@
                 }
               }
 
-5. To run the application, run the following command:
+5. Go to BaseUrl.js  file in src/services/api/BaseUrl.js, and change the ip adress in the base URl acording to your ip address
+
+6. To run the application, run the following command:
       expo start
     
     You can use Android Emulator or IOS Simulator.
