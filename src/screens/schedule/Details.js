@@ -41,32 +41,32 @@ export default function Details(props) {
     
     return(
         <View>
-                <View style={styles.input}>
-                    <TextInput 
-                        placeholder="share more details about your shifts"
-                        multiline
-                        value={detail}
-                        onChangeText={setDetail}
-                        style={{width:"90%"}}
-                    />
-                    <TouchableOpacity onPress={addDetail}>
-                        <Icon name="caretright" size={30} color="#00ced1" />
-                    </TouchableOpacity>
-                </View>
-                
-                {   details && details.length !== 0 && 
-                    details.map((detail, i) => (
-                        <View key={i} style={styles.detailCtr}>
-                            {/* { (i+1)%2==0? 
-                                <Icon name="star" size={30} color="#00ced1" />:
-                                <Icon name="star" size={30} color="orange" />
-                            } */}
-                            <DeleteDetail token={props.token} id={detail.id} render={render} setRender={setRender}/>
-                            <Text style={styles.detail}>{detail.detail}</Text>
-                           
-                        </View>
-                    ))
-                }
+            <View style={styles.input}>
+                <TextInput 
+                    placeholder="share more details about your shifts"
+                    multiline
+                    value={detail}
+                    onChangeText={setDetail}
+                    style={{width:"90%"}}
+                />
+                <TouchableOpacity onPress={addDetail}>
+                    <Icon name="caretright" size={30} color="#00ced1" />
+                </TouchableOpacity>
+            </View>
+            
+            {   details && details.length !== 0 && 
+                details.map((detail, i) => (
+                    <View key={i} style={styles.detailCtr}>
+                        {/* { (i+1)%2==0? 
+                            <Icon name="star" size={30} color="#00ced1" />:
+                            <Icon name="star" size={30} color="orange" />
+                        } */}
+                        <DeleteDetail token={props.token} id={detail.id} render={render} setRender={setRender}/>
+                        <Text style={styles.detail}>{detail.detail}</Text>
+                        
+                    </View>
+                ))
+            }
         </View>
     )
 }

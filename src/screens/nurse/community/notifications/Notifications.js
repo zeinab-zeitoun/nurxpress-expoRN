@@ -55,78 +55,78 @@ export default function Notifications({navigation}) {
 
     return(
         <View style={styles.container}>
-        <ImageBackground source={require('../../../../images/background2.png')} style={styles.backImage}>
+            <ImageBackground source={require('../../../../images/background2.png')} style={styles.backImage}>
                 <ScrollView keyboardShouldPersistTaps='handled'>
 
-            <View >
-                {
-                    comments.length === 0?
-                    (
-                        <>
-                        <Image source ={require('../../../../images/notifications.png')}
-                            style={styles.image}
-                        />
-                        <Text style={styles.noNotifications}>You do not have notifications on the last month</Text>
-                        </>
-                    ):
-                    
-                    comments.map( comment =>(
-                        
-                        // if the message is unread yet, set the backgrount gray 
-                        // add a function to make it read
-                        comment.read === 0? 
-                        <TouchableOpacity key={comment.id}
-                                            style={styles.notificationCtr}
-                                            onPress={() => {
-                                                markRead(comment.id)
-                                                navigation.navigate("Comments", {post_id:comment.post_id})
-                                                }}
-                                            >
+                    <View >
+                        {
+                            comments.length === 0?
+                            (
+                                <>
+                                <Image source ={require('../../../../images/notifications.png')}
+                                    style={styles.image}
+                                />
+                                <Text style={styles.noNotifications}>You do not have notifications on the last month</Text>
+                                </>
+                            ):
+                            
+                            comments.map( comment =>(
                                 
-                                <View style={styles.column}>
-                                    <Icon name="comment" size={40} style={styles.commentIcon}/>
-                                    <Text style={{fontSize:10}}>{moment(comment.created_at).fromNow()}</Text>
-                                </View>
-                                
-                                <View>
-                                    <Text style={styles.name}>
-                                        {comment.firstName} {comment.lastName}
-                                    </Text>
-                                    
-                                    <Text style={{fontSize: 16}}>
-                                        added a review on your post
-                                    </Text>
-                                </View>
-        
-                        </TouchableOpacity>:
+                                // if the message is unread yet, set the backgrount gray 
+                                // add a function to make it read
+                                comment.read === 0? 
+                                <TouchableOpacity key={comment.id}
+                                                    style={styles.notificationCtr}
+                                                    onPress={() => {
+                                                        markRead(comment.id)
+                                                        navigation.navigate("Comments", {post_id:comment.post_id})
+                                                        }}
+                                                    >
+                                        
+                                        <View style={styles.column}>
+                                            <Icon name="comment" size={40} style={styles.commentIcon}/>
+                                            <Text style={{fontSize:10}}>{moment(comment.created_at).fromNow()}</Text>
+                                        </View>
+                                        
+                                        <View>
+                                            <Text style={styles.name}>
+                                                {comment.firstName} {comment.lastName}
+                                            </Text>
+                                            
+                                            <Text style={{fontSize: 16}}>
+                                                added a review on your post
+                                            </Text>
+                                        </View>
+                
+                                </TouchableOpacity>:
 
-                        // if the message is read , set the background white 
-                        <TouchableOpacity key={comment.id}
-                                            style={styles.readNotificationCtr}
-                                            onPress={() => navigation.navigate("Comments", {post_id:comment.post_id})}>
-                                
-                                <View style={styles.column}>
-                                    <Icon name="comment" size={40} style={styles.commentIcon}/>
-                                    <Text style={{fontSize:10}}>{moment(comment.created_at).fromNow()}</Text>
-                                </View>
-                                
-                                <View>
-                                    <Text style={styles.name}>
-                                        {comment.firstName} {comment.lastName}
-                                    </Text>
-                                    
-                                    <Text style={{fontSize: 16}}>
-                                        added a review on your post
-                                    </Text>
-                                </View>
-        
-                        </TouchableOpacity>
+                                // if the message is read , set the background white 
+                                <TouchableOpacity key={comment.id}
+                                                    style={styles.readNotificationCtr}
+                                                    onPress={() => navigation.navigate("Comments", {post_id:comment.post_id})}>
+                                        
+                                        <View style={styles.column}>
+                                            <Icon name="comment" size={40} style={styles.commentIcon}/>
+                                            <Text style={{fontSize:10}}>{moment(comment.created_at).fromNow()}</Text>
+                                        </View>
+                                        
+                                        <View>
+                                            <Text style={styles.name}>
+                                                {comment.firstName} {comment.lastName}
+                                            </Text>
+                                            
+                                            <Text style={{fontSize: 16}}>
+                                                added a review on your post
+                                            </Text>
+                                        </View>
+                
+                                </TouchableOpacity>
 
-                    ))
-                }
-            </View>
-        </ScrollView>
-        </ImageBackground>
+                            ))
+                        }
+                    </View>
+                </ScrollView>
+            </ImageBackground>
         </View>
         )
     }

@@ -266,7 +266,8 @@ export default function Example(props) {
 
     return (
       <View 
-      style={styles.container} >
+        style={styles.container} 
+      >
           <View style={styles.receiverCtr}>
             {/* back bottun */}
             <Icon name="arrowleft" size={30} 

@@ -85,7 +85,7 @@ export default function Map({navigation}) {
             <ActivityIndicator size="large" color="#00ced1" />
         </View>
     else
-        return(
+      return(
         <View>
             <MapView style={styles.map}
                 provider={PROVIDER_GOOGLE}

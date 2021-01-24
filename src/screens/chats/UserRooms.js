@@ -99,73 +99,72 @@ export default function UserRooms(props){
             <Text style={{fontSize: 30}}>No chats yet!</Text>
         </View>)
     //else
-      return(
+    return(
 
-        <View
-        style={styles.container}>
-         <ImageBackground source={require('../../images/background2.png')} style={styles.backImage}>
-         <ScrollView
-            keyboardShouldPersistTaps='handled'
-        >
-            {/* search input */}
-            <View style={styles.search}>
-                <Icon name="search1" size={25} color="#d1d1d1" style={{marginRight:10}}/>
-                <TextInput placeholder="search"
-                  onChangeText={(input) => handleSearchNames(input)}
-                />
-            </View>
-            {/* handle chat rooms after being filtered */}
-            {
-              filteredRooms.length===0 &&
-                <Text style={styles.noResults}>no results!</Text>
-            }
-            {/* for reach chat room, display avatar, name, last message, and time of the last message */}
-            { 
-                filteredRooms.map ((room) => {
-                return(
-                    <TouchableOpacity 
-                        style={
-                            [styles.room,
-                            room.user1openedAt.toDate() > room.updatedAt.toDate()?
-                            styles.read:
-                            styles.unread]
+    <View style={styles.container}>
+        <ImageBackground source={require('../../images/background2.png')} style={styles.backImage}>
+            <ScrollView
+                keyboardShouldPersistTaps='handled'
+            >
+                {/* search input */}
+                <View style={styles.search}>
+                    <Icon name="search1" size={25} color="#d1d1d1" style={{marginRight:10}}/>
+                    <TextInput placeholder="search"
+                    onChangeText={(input) => handleSearchNames(input)}
+                    />
+                </View>
+                {/* handle chat rooms after being filtered */}
+                {
+                filteredRooms.length===0 &&
+                    <Text style={styles.noResults}>no results!</Text>
+                }
+                {/* for reach chat room, display avatar, name, last message, and time of the last message */}
+                { 
+                    filteredRooms.map ((room) => {
+                    return(
+                        <TouchableOpacity 
+                            style={
+                                [styles.room,
+                                room.user1openedAt.toDate() > room.updatedAt.toDate()?
+                                styles.read:
+                                styles.unread]
+                                }
+
+                            key={room.user2}
+                            onPress={ () => 
+                            {
+                            
+                                props.navigation.navigate("Chats", {
+                                    receiver_id : room.user2,
+                                    receiver_name : room.user2Name,
+                                    sender_id: room.user1,
+                                    loggedin: "regular",
+                                    roomId: room.roomId,
+                                })
                             }
-
-                        key={room.user2}
-                        onPress={ () => 
-                        {
-                           
-                            props.navigation.navigate("Chats", {
-                                receiver_id : room.user2,
-                                receiver_name : room.user2Name,
-                                sender_id: room.user1,
-                                loggedin: "regular",
-                                roomId: room.roomId,
-                            })
-                        }
-                    }>
-                        <View style ={styles.row}>
-                        {avatarUrls &&
-                            <Avatar.Image 
-                              source={{
-                              uri: avatarUrls[room.user2],
-                              }}
-                              size={40}
-                          />}
-                            <View style={styles.column}>
-                                <View style={styles.row}>
-                                    <Text style={styles.name} >{room.user2Name}</Text>
-                                    <Text style={styles.time}>  {moment(room.updatedAt.toDate()).fromNow()}</Text>
+                        }>
+                            <View style ={styles.row}>
+                            {avatarUrls &&
+                                <Avatar.Image 
+                                source={{
+                                uri: avatarUrls[room.user2],
+                                }}
+                                size={40}
+                            />}
+                                <View style={styles.column}>
+                                    <View style={styles.row}>
+                                        <Text style={styles.name} >{room.user2Name}</Text>
+                                        <Text style={styles.time}>  {moment(room.updatedAt.toDate()).fromNow()}</Text>
+                                    </View>
+                                        <Text numberOfLines={1} style={styles.lastMessage} >{room.lastMessage}</Text>
                                 </View>
-                                    <Text numberOfLines={1} style={styles.lastMessage} >{room.lastMessage}</Text>
                             </View>
-                        </View>
-                        
-                    </TouchableOpacity>
-                )
-            })}
-        </ScrollView>
-    </ImageBackground>
+                            
+                        </TouchableOpacity>
+                    )
+                })}
+            </ScrollView>
+        </ImageBackground>
     </View>
     )
   }

@@ -89,16 +89,20 @@ export default function Settings ({navigation}) {
  
     //logout
     const logout = async() => {
+        // set the push notification to null
         await db.collection('users')
             .doc(nurse.user_id.toString())
             .update({
                 pushToken : null
             })
         .then( async () => {
+            // logout from firebase
             await firebase.auth().signOut()
         }).then(async () => {
+            // logout from laravel
             await apiAuth.logout()
         }).then( async() => {
+            //clear all cookies
             await cookie.clearAll()
         }).then( () => {
             navigation.navigate("Login")
@@ -143,7 +147,7 @@ export default function Settings ({navigation}) {
                 <View>
                     <TouchableOpacity onPress={ () => navigation.navigate("CommunityNotifications")}
                                         style={styles.notifications} >
-
+                        {/* section for community notifications */}
                         <View style={styles.menuItem}>
                             <ExpoIcon name="notification" color="#00ced1" size={25}/>
                             <Text style={styles.menuItemText}>
@@ -156,6 +160,7 @@ export default function Settings ({navigation}) {
                         </View>
                     </TouchableOpacity>
 
+                    {/* section for Availability*/}
                     <TouchableOpacity onPress={ () => navigation.navigate("Availability", {token:token})}>
                     <View style={styles.menuItem}>
                         <Icon name="calendar" color="#00ced1" size={25}/>
@@ -165,6 +170,7 @@ export default function Settings ({navigation}) {
                     </View>
                     </TouchableOpacity>
 
+                    {/* section to change location*/}
                     <TouchableOpacity onPress={ () => navigation.navigate("EditLocation")}>
                     <View style={styles.menuItem}>
                         <Icon name="map-marker-radius" color="#00ced1" size={25}/>
@@ -174,6 +180,7 @@ export default function Settings ({navigation}) {
                     </View>
                     </TouchableOpacity>
 
+                    {/* section to logout*/}
                     <TouchableOpacity onPress={ () => logout()}>
                     <View style={[styles.menuItem, {borderTopWidth: 2,borderBottomWidth: 2, borderColor: "#dddddd"}]}>
                         <Icon name="logout" color="#00ced1" size={25}/>

@@ -66,15 +66,19 @@ export default function Settings ({navigation}) {
     //logout
     
     const logout = async() => {
+        // set expo push noification to null
         await db.collection('users')
             .doc(user.user_id.toString())
             .update({
                 pushToken : null
         }).then( async () => {
+            //logout from firebase
             await firebase.auth().signOut()
         }).then(async () => {
+            // logout from laravel
             await apiAuth.logout()
         }).then( async() => {
+            // clear all cookies
             await cookie.clearAll()
         }).then( () => {
             navigation.navigate("Login")

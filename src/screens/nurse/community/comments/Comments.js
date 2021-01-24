@@ -66,56 +66,56 @@ export default function Comments(props){
 
     return(
         <View style={styles.container}>
-        <ImageBackground source={require('../../../../images/background2.png')} style={styles.backImage}>
+            <ImageBackground source={require('../../../../images/background2.png')} style={styles.backImage}>
                 <ScrollView keyboardShouldPersistTaps='handled'>
 
-            <View style={styles.commentSection}>
+                    <View style={styles.commentSection}>
 
-                <TouchableOpacity onPress={() => props.navigation.navigate("OnePost", {id: props.route.params.post_id})}>
-                    <Text style={styles.seePost}>See Post</Text>
-                </TouchableOpacity>
-
-                {/* display all comments if any */}
-                {   comments.length!==0 &&
-                    
-                    comments.map( comment => (
-                        <View key={comment.id}>
-                            <View style={styles.commentContainer}>
-                                <View style={styles.row}>
-                                    <Text style={styles.commenter}>{comment.firstName} {comment.lastName}</Text>
-                                    {comment.commenter &&
-                                            <TouchableOpacity >
-                                                <DeleteComment id = {comment.id} deleted={deleted} setDeleted={setDeleted} />
-                                            </TouchableOpacity>       
-                                    }
-                                </View>
-                                <Text>{comment.comment}</Text>
-                            </View>
-                        </View>
-                        
-                    ))
-                }
-
-                    {/* text input for comments */}
-                    <View style={styles.writeComment}>
-                        <TextInput 
-                            placeholder="write a review" 
-                            multiline
-                            style={{width:"90%"}}
-                            value = {comment}
-                            onChangeText={ value => setComment(value)}
-                            />
-
-                        {/* add the comment on press */}
-                        <TouchableOpacity onPress={addComment}>
-                            <Icon name="caretright" size={30} color="#00ced1" />
+                        <TouchableOpacity onPress={() => props.navigation.navigate("OnePost", {id: props.route.params.post_id})}>
+                            <Text style={styles.seePost}>See Post</Text>
                         </TouchableOpacity>
-                    </View>
-                     
-            </View>
 
-        </ScrollView>
-        </ImageBackground>
+                        {/* display all comments if any */}
+                        {   comments.length!==0 &&
+                            
+                            comments.map( comment => (
+                                <View key={comment.id}>
+                                    <View style={styles.commentContainer}>
+                                        <View style={styles.row}>
+                                            <Text style={styles.commenter}>{comment.firstName} {comment.lastName}</Text>
+                                            {comment.commenter &&
+                                                    <TouchableOpacity >
+                                                        <DeleteComment id = {comment.id} deleted={deleted} setDeleted={setDeleted} />
+                                                    </TouchableOpacity>       
+                                            }
+                                        </View>
+                                        <Text>{comment.comment}</Text>
+                                    </View>
+                                </View>
+                                
+                            ))
+                        }
+
+                            {/* text input for comments */}
+                            <View style={styles.writeComment}>
+                                <TextInput 
+                                    placeholder="write a review" 
+                                    multiline
+                                    style={{width:"90%"}}
+                                    value = {comment}
+                                    onChangeText={ value => setComment(value)}
+                                    />
+
+                                {/* add the comment on press */}
+                                <TouchableOpacity onPress={addComment}>
+                                    <Icon name="caretright" size={30} color="#00ced1" />
+                                </TouchableOpacity>
+                            </View>
+                            
+                    </View>
+
+                </ScrollView>
+            </ImageBackground>
         </View>
     )
 }
