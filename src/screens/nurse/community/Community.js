@@ -33,14 +33,17 @@ export default function Community({navigation}){
             //get avatar of the users
             getAvatar()
         })
-        .catch( err => console.log("error", err))
+        .catch( () => {
+            // unable to fetch posts
+        })
     }
 
     const[avatarUrls, setAvatarUrls] = useState(null)
     const getAvatar = () => {
         // get users avatar
     db.collection("users")
-    .onSnapshot( snap => {
+    .get()
+    .then( snap => {
         let avatarUrl = {}
         snap.forEach(doc => {
             avatarUrl[doc.id]= doc.data().avatarUrl

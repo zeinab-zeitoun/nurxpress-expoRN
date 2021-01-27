@@ -14,7 +14,9 @@ export default function Notifications({navigation}) {
     const getComments = async () => {
         await api.getUserPostsComments(token)
         .then(res => setComments(res.data))
-        .catch( err => console.log(err))
+        .catch( err => {
+            // unable to fetch comments
+        })
     }
 
     // get the token
@@ -27,7 +29,9 @@ export default function Notifications({navigation}) {
     // mark notification as red
     const markRead = async (id) => {
         await api.markRead(id, token)
-        .catch( err => console.log(err))
+        .catch( () => {
+            // unable to mark notification as read
+        })
     } 
 
     useEffect( () => {

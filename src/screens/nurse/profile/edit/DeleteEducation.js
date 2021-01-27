@@ -21,7 +21,6 @@ export default function DeleteEducation(props) {
     // delete education
     const deleteNurseEducation = () => {
         api.deleteNurseEducation(id, token)
-        .then(res => console.log(res.data))
         .catch( err => console.log(err))
     }
 

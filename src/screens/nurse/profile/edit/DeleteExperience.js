@@ -21,7 +21,6 @@ export default function DeleteExperience(props, {navigation}) {
     // delete education
     const deleteNurseExperience = async () => {
         await api.deleteNurseExperience(id, token)
-        .then((res) => console.log(res.data))
         .catch( err => console.log(err))
     }
 

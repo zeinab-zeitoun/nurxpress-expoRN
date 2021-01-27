@@ -16,7 +16,9 @@ export default function Comments(props){
     const getComments = async () => {
         await api.getPostComments(props.route.params.post_id,token)
         .then(res => setComments(res.data))
-        .catch( err => console.log(err))
+        .catch( () => {
+            //unable o fetch comments
+        })
     }
 
     //add comment
@@ -29,7 +31,9 @@ export default function Comments(props){
             //empty comment again to empty the input text value
             setComment("")
         })
-        .catch( err => console.log(err))
+        .catch( err => {
+            //unable to add comment
+        })
     }
 
     // get the token

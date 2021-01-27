@@ -27,6 +27,7 @@ export default function NurseRooms(props){
     const [avatarUrls, setAvatarUrls] = useState(null)
     const [rooms, setRooms] = useState(null)
     const [filteredRooms, setFilteredRooms] = useState([])
+    const [render, setRender] = useState(false)
 
     // get user_id
     const [user_id, setUser_id] = useState('');
@@ -76,8 +77,12 @@ export default function NurseRooms(props){
             unsubscribeFromAvatars()
 
         })
+        
+        props.navigation.addListener ('focus', () => {
+            setRender(!render)
+        })
 
-    }, [user_id])
+    }, [user_id, render])
 
     // filtering rooms according to search input
     const handleSearchNames = (input) => {

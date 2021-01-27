@@ -52,7 +52,6 @@ export default function EditExperience(props) {
     const getToken = async () => {
         await cookie.get('token')
         .then(value => setToken(value));
-        console.log(token)
     }
 
     
@@ -109,7 +108,6 @@ export default function EditExperience(props) {
 
                     // will be executed if the the form data is validated, otherwise, the error messages will be shown
                     onSubmit={(values) => {
-                            console.log(values)
                             editNurseExperience(id, values, token)
                             props.navigation.navigate("ShowExperience")
                         }

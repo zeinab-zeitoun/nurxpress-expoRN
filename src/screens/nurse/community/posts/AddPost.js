@@ -10,7 +10,6 @@ export default function AddPost({navigation}){
          const [post, setPost]=useState("")
          const addPost = async () => {
              await api.addPost({post}, token)
-             .then(res => console.log(res.data))
              .catch( err => console.log(err))
              // navigate back to the community after adding the post
              navigation.goBack()
@@ -21,7 +20,6 @@ export default function AddPost({navigation}){
          const getToken = async () => {
              await cookie.get('token')
              .then(value => setToken(value));
-             console.log(token)
          }
      
      

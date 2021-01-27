@@ -25,6 +25,7 @@ export default function UserRooms(props){
     const[avatarUrls, setAvatarUrls] = useState(null)
     const [rooms, setRooms] = useState(null)
     const [filteredRooms, setFilteredRooms] = useState([])
+    const [render, setRender] = useState(false)
 
     // get user_id
     const [user_id, setUser_id] = useState('');
@@ -68,13 +69,17 @@ export default function UserRooms(props){
                                             setAvatarUrls(avatarUrl)
                                         })
 
+        props.navigation.addListener ('focus', () => {
+            setRender(!render)
+        })
+
         props.navigation.addListener ('blur', () => {
             // stop listening to changesfrom firestore when leaving the screen
             unsubscribeFromRooms()
             unsubscribeFromAvatars()
         })
 
-    }, [user_id])
+    }, [user_id, render])
 
     const handleSearchNames = (input) => {
         // lowercase the input and the name

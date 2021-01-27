@@ -19,10 +19,10 @@ export default function DeletePost(props) {
 
     // delete comment
     const deleteComment = () => {
-        console.log(props.id)
         api.deleteComment(props.id, token)
-        .then(res => console.log(res.data))
-        .catch( err => console.log(err))
+        .catch( () => {
+            // unable to delete comment
+        })
     }
 
     // confirm deletion
