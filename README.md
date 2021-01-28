@@ -33,7 +33,7 @@
             measurementId: "G-MEASUREMENT_ID",
           };
 
-    Copy and paste you config in FirebaseConfig.js in the root directory
+    Copy and paste your Firebase config in FirebaseConfig.js in the root directory
     
     c. Go to Firebase->storage-> create a folder “avatar”. In the folder avatar, upload an image and name it: default-avatar.jpg
 
